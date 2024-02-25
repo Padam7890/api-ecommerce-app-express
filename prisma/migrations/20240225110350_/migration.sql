@@ -22,10 +22,11 @@ CREATE TABLE `Favourites` (
 -- CreateTable
 CREATE TABLE `Product` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `title` VARCHAR(191) NOT NULL,
-    `description` VARCHAR(191) NOT NULL,
-    `price` DECIMAL(65, 30) NOT NULL,
-    `image` VARCHAR(191) NOT NULL,
+    `product_title` VARCHAR(191) NOT NULL,
+    `product_description` VARCHAR(191) NOT NULL,
+    `regular_price` DECIMAL(65, 30) NOT NULL,
+    `sale_price` DECIMAL(65, 30) NOT NULL,
+    `product_image` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -1,4 +1,5 @@
 const { prisma } = require("../config/prisma");
+const upload = require("../middleware/upload"); 
 
 async function getAllProducts(request, response) {
   const products = await prisma.product.findMany();
@@ -16,27 +17,32 @@ async function getProductByID(request, response) {
   response.json({ product: product });
 }
 
-async function createProduct(request, response) {
-  const { title, description, price } = request.body;
-  const image = request.file;
-  
+const createProduct = async (request, response) => {
+  const { product_title, product_description, regular_price, sale_price } = request.body;
 
-  if (price < 0) {
-    response.json({ message: "Price needs to be greater than 0" });
-    return;
+  // Multer middleware has already processed the file upload
+  const product_image = request.file;
+
+  if (!product_image) {
+    return response.status(400).json({ error: 'Product image is required' });
   }
 
+  const imagePath = './storage/' + product_image.filename;
+
+  // Save the product information in the database using Prisma
   const product = await prisma.product.create({
     data: {
-      title: title,
-      description: description,
-      price: price,
-      image: "image.path",
+      product_title: product_title,
+      product_description: product_description,
+      regular_price: regular_price,
+      sale_price: sale_price,
+      product_image: imagePath,
     },
   });
 
-  response.json({ message: "Product added successfully", product: product });
-}
+  response.json({ message: 'Product added successfully', product: product });
+};
+
 
 async function updateProduct(request, response) {
   const { id } = request.params;

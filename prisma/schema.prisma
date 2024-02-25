@@ -33,9 +33,10 @@ model Favourites {
 
 model Product {
   id Int @id @default(autoincrement())
-  title String
-  description String
-  price Decimal
-  image String
+  product_title String
+  product_description String
+  regular_price Decimal
+  sale_price Decimal
+  product_image String
   favourites Favourites[]
 }

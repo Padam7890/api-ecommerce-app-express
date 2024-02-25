@@ -12,7 +12,7 @@ const {
 
 router.get("/", getAllProducts);
 router.get("/:id", getProductByID);
-router.post("/", createProduct);
+router.post("/", upload.single("product_image"), createProduct);
 router.put("/:id", upload.single("image"), updateProduct);
 router.delete("/:id", deleteProduct);
 
