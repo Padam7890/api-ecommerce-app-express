@@ -1,0 +1,11 @@
+{
+  "name": "ecommerce-backend-express",
+  "version": "1.0.0",
+  "description": "ecommerce backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "padam thapa",
+  "license": "ISC"
+}
