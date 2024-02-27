@@ -1,8 +1,13 @@
 const ProductRouter = require("./productRoute");
+const categoryRouter = require("./categoryRoute");
 const UserRouter = require("./userRoute");
 
 function LoadRoutes(app) {
   app.use("/products", ProductRouter);
+  app.use("/categories", categoryRouter);
+
+  /*
+
   /*
     http://localhost:3000/auth/register
   */

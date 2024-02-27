@@ -1,12 +1,11 @@
 const { prisma } = require("../config/prisma");
-const upload = require("../middleware/upload"); 
+const upload = require("../middleware/upload");
 
 async function getAllProducts(request, response) {
   const products = await prisma.product.findMany();
 
   response.json({ products: products });
 }
-
 
 async function getProductByID(request, response) {
   const { id } = request.params;
@@ -19,16 +18,17 @@ async function getProductByID(request, response) {
 }
 
 const createProduct = async (request, response) => {
-  const { product_title, product_description, regular_price, sale_price } = request.body;
+  const { product_title, product_description, regular_price, sale_price } =
+    request.body;
 
   // Multer middleware has already processed the file upload
   const product_image = request.file;
 
   if (!product_image) {
-    return response.status(400).json({ error: 'Product image is required' });
+    return response.status(400).json({ error: "Product image is required" });
   }
 
-  const imagePath = './storage/' + product_image.filename;
+  const imagePath = "./storage/" + product_image.filename;
 
   // Save the product information in the database using Prisma
   const product = await prisma.product.create({
@@ -41,21 +41,31 @@ const createProduct = async (request, response) => {
     },
   });
 
-  response.json({ message: 'Product added successfully', product: product });
+  response.json({ message: "Product added successfully", product: product });
 };
-
 
 async function updateProduct(request, response) {
   const { id } = request.params;
-  const { title, description, price, image } = request.body;
+  const { product_title, product_description, regular_price, sale_price } =   request.body;
+  // Multer middleware has already processed the file upload
+  const product_image = request.file;
+  const product_image_old = request.file;
 
+  if (!product_image) {
+    return response.status(400).json({ error: "Product image is required" });
+  }
+
+   
+
+  const imagePath = "./storage/" + product_image.filename;
   const product = await prisma.product.update({
     where: { id: parseInt(id) },
     data: {
-      title: title,
-      description: description,
-      price: price,
-      image: image,
+      product_title: product_title,
+      product_description: product_description,
+      regular_price: regular_price,
+      sale_price: sale_price,
+      product_image: imagePath,
     },
   });
 

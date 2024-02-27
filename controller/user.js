@@ -59,6 +59,7 @@ async function login(request, response) {
     return;
   }
 
+  
 
   const isPasswordValid = await bcrypt.compare(password, userExists.password);
 

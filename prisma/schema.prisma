@@ -12,31 +12,43 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 // prisma/schema.prisma
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  password String
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  name       String?
+  password   String
   favourites Favourites[]
 }
 
-
 model Favourites {
-  id Int @id @default(autoincrement())
-  user_id Int
-  product_id Int
+  id          Int @id @default(autoincrement())
+  user_id     Int
+  product_id  Int
+  category_id Int
 
-  user User @relation(fields: [user_id], references: [id])
-  product Product @relation(fields: [product_id], references: [id])
+  user     User     @relation(fields: [user_id], references: [id])
+  product  Product  @relation(fields: [product_id], references: [id])
+  category Category @relation(fields: [category_id], references: [id])
 }
 
 model Product {
-  id Int @id @default(autoincrement())
-  product_title String
+  id                  Int          @id @default(autoincrement())
+  product_title       String
   product_description String
-  regular_price Decimal
-  sale_price Decimal
-  product_image String
+  regular_price       Decimal
+  sale_price          Decimal
+  product_image       String
+  favourites          Favourites[]
+  category_id         Int
+
+  category Category @relation(fields: [category_id], references: [id])
+}
+
+model Category {
+  id                  Int       @id @default(autoincrement())
+  category_name String
+  products            Product[]
   favourites Favourites[]
 }
