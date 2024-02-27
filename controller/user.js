@@ -3,23 +3,39 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function register(request, response) {
-  const { name, email, password, } = request.body;
+  try {
+    const { name, email, password } = request.body;
 
-  const salt = bcrypt.genSaltSync(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+    // Check if the email already exists in the database
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
 
-  const user = await prisma.user.create({
-    data: {
-      name: name,
-      email: email,
-      password: hashedPassword,
-    },
-  });
+    // If the email already exists, respond with an error message
+    if (existingUser) {
+      return response.status(400).json({ error: 'Email already exists' });
+    }
 
-  
-  const jwtToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET_KEY);
+    const salt = bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-  response.json({ message: "Success", token: jwtToken });
+    const newUser = await prisma.user.create({
+      data: {
+        name: name,
+        email: email,
+        password: hashedPassword,
+      },
+    });
+
+    const jwtToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET_KEY);
+
+    response.json({ message: 'Success', token: jwtToken });
+  } catch (error) {
+    console.error('Error during registration:', error);
+    response.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 async function login(request, response) {
@@ -54,22 +70,14 @@ async function login(request, response) {
   const jwtToken = jwt.sign({ id: userExists.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "1h",
   });
-  
+
 
   response.json({ message: "Success", token: jwtToken, user: userExists });
 }
 
-async function balance(request, response) {
-  const id = request.user_id;
-
-  const user = await prisma.user.findUnique({ where: { id: parseInt(id) } });
-
-  response.json({ balance: user.balance });
-}
 
 module.exports = {
   register,
   login,
-  balance,
 };
 

@@ -6,6 +6,7 @@ async function checkAuth(request, response, next) {
       return;
     }
   
+    
     try {
       const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
       request.user_id = decoded.id;

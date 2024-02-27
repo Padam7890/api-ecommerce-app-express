@@ -18,9 +18,9 @@ model User {
   email String  @unique
   name  String?
   password String
-  balance Decimal
   favourites Favourites[]
 }
+
 
 model Favourites {
   id Int @id @default(autoincrement())

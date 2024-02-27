@@ -6,7 +6,6 @@ const { register, login, balance } = require("../controller/user");
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/balance", checkAuth, balance);
 
 module.exports = router;
 

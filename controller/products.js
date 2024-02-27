@@ -7,6 +7,7 @@ async function getAllProducts(request, response) {
   response.json({ products: products });
 }
 
+
 async function getProductByID(request, response) {
   const { id } = request.params;
 
