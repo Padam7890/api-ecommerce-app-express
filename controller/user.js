@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 async function register(request, response) {
-  const { name, email, password, balance } = request.body;
+  const { name, email, password, } = request.body;
 
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = await bcrypt.hash(password, salt);
@@ -13,8 +13,6 @@ async function register(request, response) {
       name: name,
       email: email,
       password: hashedPassword,
-      balance: balance,
-
     },
   });
 
@@ -56,6 +54,7 @@ async function login(request, response) {
   const jwtToken = jwt.sign({ id: userExists.id }, process.env.JWT_SECRET_KEY, {
     expiresIn: "1h",
   });
+  
 
   response.json({ message: "Success", token: jwtToken, user: userExists });
 }
