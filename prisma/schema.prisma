@@ -36,7 +36,7 @@ model Favourites {
 model Product {
   id                  Int          @id @default(autoincrement())
   product_title       String
-  product_description String
+  product_description  String @db.LongText
   regular_price       Decimal
   sale_price          Decimal
   product_image       String
@@ -52,3 +52,4 @@ model Category {
   products            Product[]
   favourites Favourites[]
 }
+

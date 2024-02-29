@@ -29,6 +29,9 @@ const createCategory = async (request, response) => {
   response.json({ message: "Category added successfully", category: category });
 };
 
+
+
+
 async function updateCategory(request, response) {
   const { id } = request.params;
   const {category_name } =request.body;
@@ -49,9 +52,29 @@ async function updateCategory(request, response) {
 async function deleteCategory(request, response) {
   const { id } = request.params;
 
- const category = await prisma.category.delete({ where: { id: parseInt(id) } });
+  // Check if the category has associated products
+  const associatedProducts = await prisma.product.findMany({
+    where: {
+      category_id: parseInt(id),
+    },
+  });
 
-  response.json({ category: category });
+  if (associatedProducts.length > 0) {
+    return response.status(400).json({
+      message: "Cannot delete category. It has associated products.",
+      category: null,
+    });
+  }
+
+  // If no associated products, proceed with deletion
+  const category = await prisma.category.delete({
+    where: { id: parseInt(id) },
+  });
+
+  response.json({
+    message: "Category deleted successfully",
+    category: category,
+  });
 }
 
 module.exports = {
@@ -61,3 +84,5 @@ module.exports = {
   updateCategory,
   deleteCategory,
 };
+
+
