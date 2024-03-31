@@ -1,20 +1,24 @@
-async function checkAuth(request, response, next) {
-    const token = request.headers.authorization;
-  
-    if (!token) {
-      response.json({ message: "Not Logged in" });
-      return;
-    }
-  
-    
-    try {
-      const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
-      request.user_id = decoded.id;
-      next();
-    } catch (error) {
-      response.json({ message: "Invalid Token" });
-    }
+const jwt = require("jsonwebtoken");
+
+const checkAuth = (request, response, next) => {
+  let token = request.headers.authorization;
+  if (!token) {
+    response.status(401).json({ message: "Not Logged in" });
+    return;
   }
-  
-  module.exports = checkAuth;
-  
+
+  try {
+    if (token) {
+      token = token.split(" ")[1];
+      let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      request.user_id = decoded.id;
+    } else {
+      response.status(401).json({ message: "Not Logged in" });
+    }
+
+    next();
+  } catch (error) {
+    response.status(401).json({ message: "Invalid token" });
+  }
+};
+module.exports = checkAuth;

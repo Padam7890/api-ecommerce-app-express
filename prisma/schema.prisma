@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,7 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// prisma/schema.prisma
+model Image {
+  id             Int       @id @default(autoincrement())
+  url            String
+  type           ImageType
+  type_id        Int
+}
+
+enum ImageType {
+  Category
+  Product
+  Subcategory
+}
+
 model User {
   id         Int          @id @default(autoincrement())
   email      String       @unique
@@ -23,33 +29,41 @@ model User {
 }
 
 model Favourites {
-  id          Int @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   user_id     Int
   product_id  Int
   category_id Int
-
-  user     User     @relation(fields: [user_id], references: [id])
-  product  Product  @relation(fields: [product_id], references: [id])
-  category Category @relation(fields: [category_id], references: [id])
+  user        User     @relation(fields: [user_id], references: [id])
+  product     Product  @relation(fields: [product_id], references: [id])
+  category    Category @relation(fields: [category_id], references: [id])
 }
 
 model Product {
   id                  Int          @id @default(autoincrement())
   product_title       String
-  product_description  String @db.LongText
+  product_description String      @db.Text
   regular_price       Decimal
   sale_price          Decimal
-  product_image       String
-  favourites          Favourites[]
+  // product_image       String
   category_id         Int
-
-  category Category @relation(fields: [category_id], references: [id])
+  subcategory_id      Int?
+  favourites          Favourites[]
+  category            Category   @relation(fields: [category_id], references: [id])
+  subcategory         Subcategory? @relation(fields: [subcategory_id], references: [id])
 }
 
 model Category {
-  id                  Int       @id @default(autoincrement())
-  category_name String
-  products            Product[]
-  favourites Favourites[]
+  id             Int         @id @default(autoincrement())
+  category_name  String
+  products       Product[]
+  favourites     Favourites[]
+  subcategories  Subcategory[]
 }
 
+model Subcategory {
+  id               Int         @id @default(autoincrement())
+  subcategory_name String
+  category_id      Int
+  products         Product[]
+  category         Category    @relation(fields: [category_id], references: [id])
+}

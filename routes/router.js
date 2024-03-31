@@ -1,11 +1,15 @@
 const ProductRouter = require("./productRoute");
 const categoryRouter = require("./categoryRoute");
 const UserRouter = require("./userRoute");
+const subcategoryRoute = require("./subcategoryRoute");
+const checkAuth = require("../middleware/auth");
 
 function LoadRoutes(app) {
-  app.use("/products", ProductRouter);
+  app.use("/products", checkAuth , ProductRouter);
   app.use("/categories", categoryRouter);
+  app.use("/subcategories",subcategoryRoute)
 
+  
   /*
 
   /*
