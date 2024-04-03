@@ -1,5 +1,6 @@
 const { prisma } = require("../../config/prisma");
 const fs = require("fs/promises");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function updateCategory(request, response) {
   try {
@@ -39,7 +40,7 @@ async function updateCategory(request, response) {
     const existingImage = await prisma.image.findFirst({
       where: { 
         type_id: parseInt(id), 
-        type: "Category",
+        type:IMAGE_TYPE.category,
        },
     });
 

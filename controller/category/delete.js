@@ -1,5 +1,6 @@
 const { prisma } = require("../../config/prisma");
 const fs = require("fs/promises");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function deleteCategory(request, response) {
   const { id } = request.params;
@@ -9,6 +10,7 @@ async function deleteCategory(request, response) {
     where: {
       category_id: parseInt(id),
     },
+    
   });
 
   //check if the category has associated sub category
@@ -41,14 +43,14 @@ async function deleteCategory(request, response) {
   const oldImages = await prisma.image.findMany({
     where: {
       type_id: parseInt(id),
-      type: "Category",
+      type: IMAGE_TYPE.category,
     },
   });
   //delete old product images in the database
   await prisma.image.deleteMany({
     where: {
       type_id: parseInt(id),
-      type: "Category",
+      type: IMAGE_TYPE.category,
     },
   });
 

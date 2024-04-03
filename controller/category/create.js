@@ -1,4 +1,5 @@
 const { prisma } = require("../../config/prisma");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 const createCategory = async (request, response) => {
     // const hu = request.body;
@@ -19,7 +20,7 @@ const createCategory = async (request, response) => {
     const imageupload = await prisma.image.create({
       data: {
         url: imagePath,
-        type:"Category",
+        type:IMAGE_TYPE.category,
         type_id: category.id
       },
     })

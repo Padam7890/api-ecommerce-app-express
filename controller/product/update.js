@@ -1,6 +1,5 @@
 const { prisma } = require("../../config/prisma");
-const upload = require("../../middleware/upload");
-const fs = require('fs/promises'); 
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function updateProduct(request, response) {
   try {
@@ -12,7 +11,7 @@ async function updateProduct(request, response) {
     });
 
     if (!existingProduct) {
-      return response.status(404).json({ error: 'Product not found' });
+      return response.status(404).json({ error: "Product not found" });
     }
 
     let {
@@ -21,12 +20,34 @@ async function updateProduct(request, response) {
       regular_price,
       sale_price,
       category_id,
-      subcategory_id
+      subcategory_id,
+      product_tags,
+      is_featured,
+      product_sku,
+      product_quantity,
+      product_weight,
+      product_size,
+      product_color,
+      stock_type,
     } = request.body;
+    console.log(request.body);
+
+    // Convert string to boolean value
+    is_featured = is_featured === "true" ? true : false;
+
+    // Convert string to int
+    product_sku = parseInt(product_sku, 10);
+    product_quantity = parseInt(product_quantity, 10);
+
+    // Convert string to decimal value
+    product_weight = parseFloat(product_weight);
+    product_size = parseFloat(product_size);
 
     // Convert category_id and subcategory_id to integers
     const categoryIdAsInt = parseInt(category_id, 10);
-    const subcategoryIdAsInt = subcategory_id ? parseInt(subcategory_id, 10) : null;
+    const subcategoryIdAsInt = subcategory_id
+      ? parseInt(subcategory_id, 10)
+      : null;
 
     // Look up the category by id
     const category = await prisma.category.findUnique({
@@ -42,13 +63,22 @@ async function updateProduct(request, response) {
       product_title,
       product_description,
       regular_price,
-      sale_price,
+      sale_price: sale_price || 0, // Set default value if sale_price is not provided
+      is_featured,
+      product_sku,
+      product_quantity,
+      product_weight,
+      product_size,
+      product_color,
+      stock_type,
       category: {
-        connect: { id: category.id }, // Connect the product to the found category
+        connect: { id: categoryIdAsInt },
       },
-      subcategory: subcategoryIdAsInt ? {
-        connect: { id: subcategoryIdAsInt }, // Connect the product to the found subcategory if subcategory_id is provided
-      } : null, // Set subcategory to null if subcategory_id is not provided
+      subcategory: subcategoryIdAsInt
+        ? {
+            connect: { id: subcategoryIdAsInt },
+          }
+        : null, 
     };
 
     // Update the product in the database using Prisma
@@ -56,6 +86,49 @@ async function updateProduct(request, response) {
       where: { id: parseInt(id) },
       data: updatedProductData,
     });
+
+    // Split the product_tags string by commas
+    const product_tags_array = product_tags.split(",");
+
+    // Trim whitespace from each tag and create an array of tag objects
+    const product_tags_data = product_tags_array.map((tag) => ({
+      name: tag.trim(),
+    }));
+
+    // Array to store tag IDs
+    const tagIds = [];
+
+    for (const tagData of product_tags_data) {
+      // Check if tag already exists
+      let existingTag = await prisma.tag.findUnique({
+        where: { name: tagData.name },
+      });
+
+      if (!existingTag) {
+        // If tag doesn't exist, create a new one
+        existingTag = await prisma.tag.create({ data: tagData });
+      }
+
+      // Push the tag ID into the array
+      tagIds.push(existingTag.id);
+    }
+
+    // Delete existing associations
+    await prisma.productTag.deleteMany({
+      where: {
+        product_id: updatedProduct.id,
+      },
+    });
+
+    // Create new associations
+    for (const tagId of tagIds) {
+      await prisma.productTag.create({
+        data: {
+          product: { connect: { id: updatedProduct.id } },
+          tags: { connect: { id: tagId } },
+        },
+      });
+    }
 
     const productImages = request.files;
 
@@ -65,19 +138,21 @@ async function updateProduct(request, response) {
 
         await prisma.image.create({
           data: {
-            type_id: updatedProduct.id, // Use the updated product id
+            type_id: updatedProduct.id,
             url: imagePath,
-            type: "Product",
+            type: IMAGE_TYPE.product,
           },
         });
       }
     }
 
-
-    response.json({ message: "Product updated successfully", product: updatedProduct });
+    response.json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
   } catch (error) {
     console.error("Error updating product:", error);
-    response.status(500).json({ error: 'Internal Server Error' });
+    response.status(500).json({ error: "Internal Server Error" });
   }
 }
 

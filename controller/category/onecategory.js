@@ -1,4 +1,5 @@
 const { prisma } = require("../../config/prisma");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function getCategoryByID(request, response) {
   const { id } = request.params;
@@ -10,7 +11,7 @@ async function getCategoryByID(request, response) {
     const image = await prisma.image.findFirst({
       where: {
         type_id: category.id,
-        type: "Category",
+        type: IMAGE_TYPE.category,
       },
     });
 

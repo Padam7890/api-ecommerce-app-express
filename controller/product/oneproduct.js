@@ -1,4 +1,5 @@
 const { prisma } = require("../../config/prisma");
+const { IMAGE_TYPE } = require("../../constants/enums");
 const upload = require("../../middleware/upload");
 
 const getProductByID = async (request, response) => {
@@ -11,6 +12,11 @@ const getProductByID = async (request, response) => {
         include: {
           category: true,
           subcategory: true,
+          ProductTag:{
+            include: {
+              tags: true
+            }
+          }
         },
       });
   
@@ -21,7 +27,7 @@ const getProductByID = async (request, response) => {
       // Fetch associated images for the product where type is 'Product'
       const productImages = await prisma.image.findMany({
         where: {
-          type: 'Product',
+          type: IMAGE_TYPE.product,
           type_id: parseInt(id)
         }
       });

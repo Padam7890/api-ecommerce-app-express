@@ -1,16 +1,20 @@
 const { prisma } = require("../../config/prisma");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function getAllCategory(request, response) {
   try {
-    const categories = await prisma.category.findMany();
+    const categories = await prisma.category.findMany({
+
+    });
     
     const categoriesWithImages = await Promise.all(categories.map(async category => {
       const images = await prisma.image.findMany({
         where: {
           type_id: category.id,
-          type:"Category"
-        }
+          type:IMAGE_TYPE.category
+        },
       });
+      
       
       return {
         ...category,

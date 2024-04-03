@@ -8,10 +8,10 @@ datasource db {
 }
 
 model Image {
-  id             Int       @id @default(autoincrement())
-  url            String
-  type           ImageType
-  type_id        Int
+  id      Int       @id @default(autoincrement())
+  url     String
+  type    ImageType
+  type_id Int
 }
 
 enum ImageType {
@@ -41,29 +41,68 @@ model Favourites {
 model Product {
   id                  Int          @id @default(autoincrement())
   product_title       String
-  product_description String      @db.Text
+  product_description String       @db.Text
   regular_price       Decimal
   sale_price          Decimal
-  // product_image       String
+  product_sku         Int?
+  stock_type          String
   category_id         Int
   subcategory_id      Int?
+  is_featured         Boolean      @default(false)
+  product_quantity    Decimal?
+  product_weight      Decimal?
+  product_size        Decimal?
+  product_color       String?
   favourites          Favourites[]
-  category            Category   @relation(fields: [category_id], references: [id])
+  tags                Tag[]
+  category            Category     @relation(fields: [category_id], references: [id])
   subcategory         Subcategory? @relation(fields: [subcategory_id], references: [id])
+  ProductTag          ProductTag[]
+}
+
+model Tag {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  products   Product[]
+  ProductTag ProductTag[]
+}
+
+model ProductTag {
+  id         Int @id @default(autoincrement())
+  product_id Int
+  tags_id    Int
+
+  product Product @relation(fields: [product_id], references: [id])
+  tags    Tag     @relation(fields: [tags_id], references: [id])
 }
 
 model Category {
-  id             Int         @id @default(autoincrement())
-  category_name  String
-  products       Product[]
-  favourites     Favourites[]
-  subcategories  Subcategory[]
+  id            Int           @id @default(autoincrement())
+  category_name String
+  products      Product[]
+  favourites    Favourites[]
+  subcategories Subcategory[]
 }
 
 model Subcategory {
-  id               Int         @id @default(autoincrement())
+  id               Int       @id @default(autoincrement())
   subcategory_name String
   category_id      Int
   products         Product[]
-  category         Category    @relation(fields: [category_id], references: [id])
+  category         Category  @relation(fields: [category_id], references: [id])
+}
+
+model Banner {
+  id       Int    @id @default(autoincrement())
+  title    String
+  subtitle String @db.Text
+  url      String
+  imageUrl String
+}
+
+model Logo {
+  id       Int    @id @default(autoincrement())
+  name     String
+  imageUrl String
+  url      String
 }

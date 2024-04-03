@@ -1,4 +1,5 @@
 const { prisma } = require("../../config/prisma");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function getallSubcategory(request, response) {
 
@@ -11,7 +12,7 @@ async function getallSubcategory(request, response) {
       const images = await prisma.image.findMany({
         where: {
           type_id: subcat.id,
-          type:"Category"
+          type:IMAGE_TYPE.subCategory
         }
       });
       

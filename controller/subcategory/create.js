@@ -1,4 +1,5 @@
 const { prisma } = require("../../config/prisma");
+const { IMAGE_TYPE } = require("../../constants/enums");
 
 
 async function storesubcategory(request, response) {
@@ -22,7 +23,7 @@ async function storesubcategory(request, response) {
      const saveimage = await prisma.image.create({
         data: {
           url: imagePath,
-          type:"Subcategory",
+          type:IMAGE_TYPE.subCategory,
           type_id: subcat.id
         },
  
