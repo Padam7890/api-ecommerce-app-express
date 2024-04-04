@@ -1,5 +1,6 @@
 const { prisma } = require("../../config/prisma");
 const { IMAGE_TYPE } = require("../../constants/enums");
+const { apiresponse } = require("../../utils/apiresponse");
 
 async function updateProduct(request, response) {
   try {
@@ -78,7 +79,7 @@ async function updateProduct(request, response) {
         ? {
             connect: { id: subcategoryIdAsInt },
           }
-        : null, 
+        : null,
     };
 
     // Update the product in the database using Prisma
@@ -146,10 +147,7 @@ async function updateProduct(request, response) {
       }
     }
 
-    response.json({
-      message: "Product updated successfully",
-      product: updatedProduct,
-    });
+    return response.json(apiresponse(200, "OK", updatedProduct)).status(200);
   } catch (error) {
     console.error("Error updating product:", error);
     response.status(500).json({ error: "Internal Server Error" });

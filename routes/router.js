@@ -3,6 +3,7 @@ const categoryRouter = require("./categoryRoute");
 const UserRouter = require("./userRoute");
 const subcategoryRoute = require("./subcategoryRoute");
 const imageRoute = require("./imageRoute")
+const bannerRoute = require("./bannerRoute")
 const checkAuth = require("../middleware/auth");
 
 function LoadRoutes(app) {
@@ -10,6 +11,7 @@ function LoadRoutes(app) {
   app.use("/categories", categoryRouter);
   app.use("/subcategories",subcategoryRoute)
   app.use('/image', imageRoute)
+  app.use('/banner',  bannerRoute)
 
   
   /*

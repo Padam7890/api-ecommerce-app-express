@@ -8,7 +8,19 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(express.json());
+
+//limit the number of json requests
+app.use(
+  express.json({
+    limit: "20kb",
+  })
+);
+
+app.use(express.urlencoded({
+  extended: true,
+  limit: "20kb",
+}));
+
 app.use("/storage", express.static("storage"));
 
 LoadRoutes(app);
@@ -16,4 +28,3 @@ LoadRoutes(app);
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
-

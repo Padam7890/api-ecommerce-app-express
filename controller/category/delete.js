@@ -1,6 +1,7 @@
 const { prisma } = require("../../config/prisma");
 const fs = require("fs/promises");
 const { IMAGE_TYPE } = require("../../constants/enums");
+const { deletefiles } = require("../../utils/filesystem");
 
 async function deleteCategory(request, response) {
   const { id } = request.params;
@@ -54,14 +55,17 @@ async function deleteCategory(request, response) {
     },
   });
 
-  for (const image of oldImages) {
-    try {
-      await fs.unlink("." + image.url);
-      console.log("Successfully deleted image:", image.url);
-    } catch (error) {
-      console.error("Unable to unlink/delete image:", image.url, error);
-    }
-  }
+  // for (const image of oldImages) {
+  //   try {
+  //     await fs.unlink("." + image.url);
+       
+  //     console.log("Successfully deleted image:", image.url);
+  //   } catch (error) {
+  //     console.error("Unable to unlink/delete image:", image.url, error);
+  //   }
+  // }
+  
+  await deletefiles(oldImages)
 
   response.json({
     message: "Category deleted successfully",
