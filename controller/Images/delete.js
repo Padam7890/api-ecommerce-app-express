@@ -1,18 +1,18 @@
 const fs = require("fs/promises");
 const { prisma } = require("../../config/prisma");
+const uploadimage = require("../../model/image");
+const { apiresponse } = require("../../utils/apiresponse");
 
 const deleteimage = async (request, response) => {
   const { id } = request.params;
-  const image = await prisma.image.findUnique({
+  const image = await uploadimage.findUnique({
     where: {
       id: parseInt(id),
     },
   });
 
   if (!image) {
-    return response.status(404).json({
-      message: "Image not found",
-    });
+    return response.json(apiresponse(400,"image not found"))
   }  
   
   try {
@@ -20,27 +20,24 @@ const deleteimage = async (request, response) => {
     await fs.unlink(filepath);
   } catch (error) {
     console.error("Unable to unlink/delete image:", image.url, error);
-    return response.status(500).json({
-      message: "Failed to delete image",
-    });
+    return response.json(apiresponse(500,"failed to delete image"))
+
   }
 
   // Delete the image record from the database
   try {
-    await prisma.image.delete({
+    await uploadimage.delete({
       where: {
         id: parseInt(id),
       },
     });
 
-    return response.status(200).json({
-      message: "Image deleted successfully",
-    });
+    return response.json(apiresponse(200,"image deleted successfull"))
+
   } catch (error) {
     console.error("Failed to delete image from database:", error);
-    return response.status(500).json({
-      message: "Failed to delete image from database",
-    });
+    return response.json(apiresponse(500,"failed to delete image"))
+
   }
 };
 

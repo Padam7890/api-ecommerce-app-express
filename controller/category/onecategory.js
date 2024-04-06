@@ -1,14 +1,18 @@
 const { prisma } = require("../../config/prisma");
 const { IMAGE_TYPE } = require("../../constants/enums");
+const category = require("../../model/category");
+const uploadimage = require("../../model/image");
+const image = require("../../model/image");
+const { apiresponse } = require("../../utils/apiresponse");
 
 async function getCategoryByID(request, response) {
   const { id } = request.params;
   try {
-    const category = await prisma.category.findUnique({
+    const categories = await category.findUnique({
       where: { id: parseInt(id) },
     });
 
-    const image = await prisma.image.findFirst({
+    const images = await uploadimage.findFirst({
       where: {
         type_id: category.id,
         type: IMAGE_TYPE.category,
@@ -16,17 +20,18 @@ async function getCategoryByID(request, response) {
     });
 
     if (!category) {
-      return response.status(404).json({ error: "Category not found" });
+      return response.json(apiresponse(404, "Not Found",));
     }
     const catwithimage = {
-      ...category,
-      image: image,
+      ...categories,
+      image: images,
     };
 
-    response.json({ category: catwithimage });
+    response.json(apiresponse(200, "OK", catwithimage, "category"))
+
   } catch (error) {
     console.error("Error fetching category and image:", error);
-    response.status(500).json({ error: "Internal server error" });
+    response.json(apiresponse(500, "Internal Server Error", error));
   }
 }
 

@@ -1,35 +1,33 @@
+const saveimagePath = require("../../config/imagepath");
+const imagePath = require("../../config/imagepath");
 const { prisma } = require("../../config/prisma");
 const { IMAGE_TYPE } = require("../../constants/enums");
+const category = require("../../model/category");
+const uploadimage = require("../../model/image");
+const image = require("../../model/image");
+const { apiresponse } = require("../../utils/apiresponse");
 
 const createCategory = async (request, response) => {
-    // const hu = request.body;
-    // console.log(hu);
-    const {category_name } =request.body;
-    const image = request.file;
-    console.log(image);
-  
-    const imagePath = "/storage/" + image.filename;
-    
-    // Save the product information in the database using Prisma
-    const category = await prisma.category.create({
-      data: {
-          category_name: category_name,
-      },
-    });
-  
-    const imageupload = await prisma.image.create({
-      data: {
-        url: imagePath,
-        type:IMAGE_TYPE.category,
-        type_id: category.id
-      },
-    })
-  
-   response.json({ 
-    message: "Category added successfully",
-    category: category,
-    image: imageupload,
-   });
-  };
-  
-module.exports = createCategory;  
+  const { category_name } = request.body;
+  const image = request.file;
+
+  const imagePath = saveimagePath(image);
+
+  const createcategories = await category.create({
+    data: {
+      category_name: category_name,
+    },
+  });
+
+  await uploadimage.create({
+    data: {
+      url: imagePath,
+      type: IMAGE_TYPE.category,
+      type_id: createcategories.id,
+    },
+  });
+
+  response.json(apiresponse(200,"Category added successfully", createcategories,"category" ))
+};
+
+module.exports = createCategory;

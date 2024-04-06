@@ -26,6 +26,7 @@ model User {
   name       String?
   password   String
   favourites Favourites[]
+  orders     Order[]
 }
 
 model Favourites {
@@ -58,6 +59,27 @@ model Product {
   category            Category     @relation(fields: [category_id], references: [id])
   subcategory         Subcategory? @relation(fields: [subcategory_id], references: [id])
   ProductTag          ProductTag[]
+  orders              Order[]
+  OrderItem           OrderItem[]
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  user       User        @relation(fields: [user_id], references: [id])
+  user_id    Int
+  products   Product[]
+  orderitems OrderItem[]
+  totalPrice Float
+  createdAt  DateTime    @default(now())
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [order_id], references: [id])
+  order_id   Int
+  product   Product @relation(fields: [product_id], references: [id])
+  product_id Int
+  quantity  Int
 }
 
 model Tag {
@@ -71,7 +93,6 @@ model ProductTag {
   id         Int @id @default(autoincrement())
   product_id Int
   tags_id    Int
-
   product Product @relation(fields: [product_id], references: [id])
   tags    Tag     @relation(fields: [tags_id], references: [id])
 }

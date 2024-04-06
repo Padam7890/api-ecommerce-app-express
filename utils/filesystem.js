@@ -1,7 +1,7 @@
 
 const fs = require ('fs/promises')
 
-const delfile = async (imageUrl)=>{
+const deletefile = async (imageUrl)=>{
     try {
        const data = await fs.unlink('.' + imageUrl);
        return data;
@@ -14,7 +14,7 @@ const delfile = async (imageUrl)=>{
 const deletefiles =   async (imageUrlarray)=>{
     for (const image of imageUrlarray) {
         try {
-          await delfile(image.url);
+          await deletefile(image.url);
           console.log("Successfully deleted image:", image.url);
         } catch (error) {
           console.error("Unable to unlink/delete image:", image.url, error);
@@ -22,4 +22,4 @@ const deletefiles =   async (imageUrlarray)=>{
       }
 }
 
-module.exports =  {delfile, deletefiles};
+module.exports =  {deletefile, deletefiles};
