@@ -19,7 +19,6 @@ const updateBanner = async (request, response) => {
       console.log("No new image uploaded.");
     }
 
-
     const updatedBanner = await banner.update({
       where: { id: parseInt(id) },
       data: {
@@ -29,7 +28,6 @@ const updateBanner = async (request, response) => {
         imageUrl: imagePath,
       },
     });
-
     console.log("Updated Banner:", updatedBanner);
 
     response.json(

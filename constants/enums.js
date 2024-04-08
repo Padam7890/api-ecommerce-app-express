@@ -4,5 +4,4 @@
   subCategory: "Subcategory",
   product: "Product",
 };
-
 module.exports = {IMAGE_TYPE};

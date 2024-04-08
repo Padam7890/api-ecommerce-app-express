@@ -10,5 +10,4 @@ const bannerindex = async (request, response) => {
     response.json(apiresponse(505, "banner error", error, "banner error"));
   }
 };
-
 module.exports = bannerindex;

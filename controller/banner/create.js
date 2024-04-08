@@ -8,13 +8,10 @@ const createbanner = async (request, response) => {
   try {
     console.log('request', request);
     let { title, subtitle, url } = request.body;
-
     const image = request.file;
     console.log(image);
     console.log(request.body);
-
     const imagePath = saveimagePath(image);
-    
     console.log({ title, subtitle, url, imagePath });
     const banners = await banner.create({
       data: {

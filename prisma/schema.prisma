@@ -21,12 +21,13 @@ enum ImageType {
 }
 
 model User {
-  id         Int          @id @default(autoincrement())
-  email      String       @unique
-  name       String?
-  password   String
-  favourites Favourites[]
-  orders     Order[]
+  id             Int             @id @default(autoincrement())
+  email          String          @unique
+  name           String?
+  password       String
+  favourites     Favourites[]
+  orders         Order[]
+  billingAddress BillingAddress?
 }
 
 model Favourites {
@@ -64,13 +65,14 @@ model Product {
 }
 
 model Order {
-  id         Int         @id @default(autoincrement())
-  user_id    Int
-  products   Product[]
-  orderitems OrderItem[]
-  totalPrice Float
-  createdAt  DateTime    @default(now())
-  user       User        @relation(fields: [user_id], references: [id])
+  id             Int             @id @default(autoincrement())
+  user_id        Int
+  products       Product[]
+  orderitems     OrderItem[]
+  billingAddress BillingAddress?
+  totalPrice     Float
+  createdAt      DateTime        @default(now())
+  user           User            @relation(fields: [user_id], references: [id])
 }
 
 model OrderItem {
@@ -80,6 +82,23 @@ model OrderItem {
   quantity   Int
   order      Order   @relation(fields: [order_id], references: [id])
   product    Product @relation(fields: [product_id], references: [id])
+}
+
+model BillingAddress {
+  id            Int     @id @default(autoincrement())
+  user          User    @relation(fields: [user_id], references: [id])
+  order         Order   @relation(fields: [order_id], references: [id])
+  order_id      Int     @unique
+  user_id       Int     @unique
+  firstName     String
+  lastName      String
+  companyName   String?
+  streetAddress String
+  country       String
+  state         String
+  zip           String
+  email         String
+  phone         String
 }
 
 model Tag {
