@@ -1,4 +1,4 @@
-const getAllProducts = require(".");
+const getAllProducts = require("../product/index");
 const product = require("../../model/product");
 const { apiresponse } = require("../../utils/apiresponse");
 const getproductimages = require("../../utils/dbimage,js");
@@ -19,21 +19,22 @@ const featuredproduct = async (request, response) => {
         },
       },
     });
-
+     
+    //product images
     const productsWithImagesInfo = await getproductimages(featuredProducts);
 
-
+    //default if product is not avilable 
     if (!featuredProducts.length) {
-      // If there are no featured products available, retrieve all products
       featuredProducts = await getAllProducts(request, response);
     }
-
-    // Check if response has already been sent
+   
+    //check already send or not 
     if (!response.headersSent) {
-      response.json(apiresponse(200, "product", productsWithImagesInfo, "products"));
+      response.json(
+        apiresponse(200, "product", productsWithImagesInfo, "products")
+      );
     }
   } catch (error) {
-    // Handle errors
     console.error("Error fetching or processing products:", error);
     if (!response.headersSent) {
       response.json(apiresponse(500, "product error", error, "product error"));
