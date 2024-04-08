@@ -65,21 +65,21 @@ model Product {
 
 model Order {
   id         Int         @id @default(autoincrement())
-  user       User        @relation(fields: [user_id], references: [id])
   user_id    Int
   products   Product[]
   orderitems OrderItem[]
   totalPrice Float
   createdAt  DateTime    @default(now())
+  user       User        @relation(fields: [user_id], references: [id])
 }
 
 model OrderItem {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [order_id], references: [id])
+  id         Int     @id @default(autoincrement())
   order_id   Int
-  product   Product @relation(fields: [product_id], references: [id])
   product_id Int
-  quantity  Int
+  quantity   Int
+  order      Order   @relation(fields: [order_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
 }
 
 model Tag {
@@ -90,11 +90,11 @@ model Tag {
 }
 
 model ProductTag {
-  id         Int @id @default(autoincrement())
+  id         Int     @id @default(autoincrement())
   product_id Int
   tags_id    Int
-  product Product @relation(fields: [product_id], references: [id])
-  tags    Tag     @relation(fields: [tags_id], references: [id])
+  product    Product @relation(fields: [product_id], references: [id])
+  tags       Tag     @relation(fields: [tags_id], references: [id])
 }
 
 model Category {
