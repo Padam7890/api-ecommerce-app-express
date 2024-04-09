@@ -6,6 +6,7 @@ const imageRoute = require("./imageRoute")
 const bannerRoute = require("./bannerRoute")
 const logoRoute = require("./logoRoute");
 const checkAuth = require("../middleware/auth");
+const orderRoute = require("./orderRoute")
 
 function LoadRoutes(app) {
   app.use("/products" , ProductRouter);
@@ -14,6 +15,7 @@ function LoadRoutes(app) {
   app.use('/image', imageRoute)
   app.use('/banner',  bannerRoute)
   app.use('/logos', logoRoute)
+  app.use('/order',orderRoute)
 
   
   /*

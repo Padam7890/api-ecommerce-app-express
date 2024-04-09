@@ -136,7 +136,6 @@ const createProduct = async (request, response) => {
         });
       }
     }
-
     response.json({
       message: "Product added successfully",
       product,
@@ -148,5 +147,4 @@ const createProduct = async (request, response) => {
     response.status(500).json({ error: "Internal server error" });
   }
 };
-
 module.exports = createProduct;

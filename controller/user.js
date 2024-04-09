@@ -15,7 +15,9 @@ async function register(request, response) {
 
     // If the email already exists, respond with an error message
     if (existingUser) {
-      return response.status(400).json({ error: 'Email already exists' });
+      return response.status(400).json({
+        error: "Email already exists",
+      });
     }
 
     const salt = bcrypt.genSaltSync(10);
@@ -31,10 +33,10 @@ async function register(request, response) {
 
     const jwtToken = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET_KEY);
 
-    response.json({ message: 'Success', token: jwtToken });
+    response.json({ message: "Success", token: jwtToken });
   } catch (error) {
-    console.error('Error during registration:', error);
-    response.status(500).json({ error: 'Internal server error' });
+    console.error("Error during registration:", error);
+    response.status(500).json({ error: "Internal server error" });
   }
 }
 
@@ -59,8 +61,6 @@ async function login(request, response) {
     return;
   }
 
-  
-
   const isPasswordValid = await bcrypt.compare(password, userExists.password);
 
   if (!isPasswordValid) {
@@ -72,17 +72,10 @@ async function login(request, response) {
     expiresIn: "1h",
   });
 
-
   response.json({ message: "Success", token: jwtToken, user: userExists });
 }
-
-
 
 module.exports = {
   register,
   login,
 };
-
-
-
-

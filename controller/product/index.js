@@ -15,7 +15,6 @@ const getAllProducts = async (request, response) => {
         },
       },
     });
-
     if (!productsWithImages) {
       return response.status(404).json({ error: "No products found" });
     }

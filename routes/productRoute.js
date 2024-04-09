@@ -8,9 +8,11 @@ const updateProduct = require("../controller/product/update");
 const deleteProduct = require("../controller/product/delete");
 const featuredproduct = require("../controller/product/featuredproduct");
 const searchproduct = require("../controller/product/searchproduct");
+const priceFilter = require("../controller/product/priceFilter");
 
 router.get('/featured_products' , featuredproduct);
-router.get('/search', searchproduct )
+router.get('/search', searchproduct );
+router.get('/filterbyprice', priceFilter)
 router.get("/", getAllProducts);
 router.get("/:id", getProductByID);
 router.post("/", upload.array("product_image", 10), createProduct);

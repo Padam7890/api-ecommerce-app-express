@@ -27,7 +27,7 @@ model User {
   password       String
   favourites     Favourites[]
   orders         Order[]
-  billingAddress BillingAddress?
+  billingAddress BillingAddress[]
 }
 
 model Favourites {
@@ -60,14 +60,12 @@ model Product {
   category            Category     @relation(fields: [category_id], references: [id])
   subcategory         Subcategory? @relation(fields: [subcategory_id], references: [id])
   ProductTag          ProductTag[]
-  orders              Order[]
   OrderItem           OrderItem[]
 }
 
 model Order {
   id             Int             @id @default(autoincrement())
   user_id        Int
-  products       Product[]
   orderitems     OrderItem[]
   billingAddress BillingAddress?
   totalPrice     Float
@@ -80,6 +78,7 @@ model OrderItem {
   order_id   Int
   product_id Int
   quantity   Int
+  price      Decimal
   order      Order   @relation(fields: [order_id], references: [id])
   product    Product @relation(fields: [product_id], references: [id])
 }
@@ -89,7 +88,7 @@ model BillingAddress {
   user          User    @relation(fields: [user_id], references: [id])
   order         Order   @relation(fields: [order_id], references: [id])
   order_id      Int     @unique
-  user_id       Int     @unique
+  user_id       Int     
   firstName     String
   lastName      String
   companyName   String?
