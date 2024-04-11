@@ -1,6 +1,6 @@
 const product = require("../../model/product");
 const { apiresponse } = require("../../utils/apiresponse");
-const getproductimages = require("../../utils/dbimage,js");
+const getproductimages = require("../../utils/dbimage.js");
 
 const getAllProducts = async (request, response) => {
   try {

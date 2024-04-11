@@ -8,7 +8,7 @@ const getOrderfromdb = async(request, response)=> {
                 user: true, 
                 orderitems: { 
                     include: {
-                        product: true
+                        product: true,
                     }
                 }
             }
@@ -17,7 +17,7 @@ const getOrderfromdb = async(request, response)=> {
         response.json(apiresponse(200, "Successfully Fetched Orders", getorders , "order"))
         
     } catch (error) {
-        response.json(apiresponse(500, "order error", error, "order error"))
+        response.json(apiresponse(500, "order error", error, "order error"));
     }
 }
 

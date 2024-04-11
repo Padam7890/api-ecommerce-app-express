@@ -1,7 +1,7 @@
 const getAllProducts = require("../product/index");
 const product = require("../../model/product");
 const { apiresponse } = require("../../utils/apiresponse");
-const getproductimages = require("../../utils/dbimage,js");
+const getproductimages = require("../../utils/dbimage.js");
 
 const featuredproduct = async (request, response) => {
   try {
