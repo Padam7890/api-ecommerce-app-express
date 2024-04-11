@@ -9,8 +9,10 @@ const deleteProduct = require("../controller/product/delete");
 const featuredproduct = require("../controller/product/featuredproduct");
 const searchproduct = require("../controller/product/searchproduct");
 const priceFilter = require("../controller/product/priceFilter");
+const popularProduct = require("../controller/product/popularproduct");
 
 router.get('/featured_products' , featuredproduct);
+router.get('/popular_products' , popularProduct)
 router.get('/search', searchproduct );
 router.get('/filterbyprice', priceFilter)
 router.get("/", getAllProducts);

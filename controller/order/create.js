@@ -31,7 +31,7 @@ const getorders = async (request, response) => {
             companyName: billingAddress.companyName,
           },
         },
-        createdAt: new Date(), // Provide current date and time
+        createdAt: new Date(), 
       },
     });
     response.json(
