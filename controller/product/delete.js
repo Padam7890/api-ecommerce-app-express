@@ -40,6 +40,12 @@ async function deleteProduct(request, response) {
       product_id: parseInt(id),
     },
   });
+  
+  await prisma.orderItem.deleteMany({
+    where: {
+      product_id: parseInt(id),
+    },
+  })
 
   // Now, delete the product itself
   await prisma.product.delete({ where: { id: parseInt(id) } });

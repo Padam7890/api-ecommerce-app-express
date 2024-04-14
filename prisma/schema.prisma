@@ -21,13 +21,23 @@ enum ImageType {
 }
 
 model User {
-  id             Int             @id @default(autoincrement())
-  email          String          @unique
-  name           String?
-  password       String
-  favourites     Favourites[]
-  orders         Order[]
-  billingAddress BillingAddress[]
+  id                       Int              @id @default(autoincrement())
+  email                    String           @unique
+  name                     String?
+  password                 String
+  roles                    UserRole         @default(User)
+  createdAt                DateTime         @default(now())
+  passwordChangedAt        DateTime?
+  passwordResetToken       String?
+  passwordResetTokenExpire DateTime?
+  favourites               Favourites[]
+  orders                   Order[]
+  billingAddress           BillingAddress[]
+}
+
+enum UserRole {
+  Admin
+  User
 }
 
 model Favourites {
@@ -88,7 +98,7 @@ model BillingAddress {
   user          User    @relation(fields: [user_id], references: [id])
   order         Order   @relation(fields: [order_id], references: [id])
   order_id      Int     @unique
-  user_id       Int     
+  user_id       Int
   firstName     String
   lastName      String
   companyName   String?
@@ -137,6 +147,14 @@ model Banner {
   subtitle String @db.Text
   url      String
   imageUrl String
+}
+
+model Menu {
+  id        Int    @id @default(autoincrement())
+  title     String
+  parent_id Int?
+  parent    Menu?  @relation("MenuSubmenu", fields: [parent_id], references: [id])
+  children  Menu[] @relation("MenuSubmenu")
 }
 
 model Logo {

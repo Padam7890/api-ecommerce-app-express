@@ -14,6 +14,7 @@ CREATE TABLE `User` (
     `email` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `password` VARCHAR(191) NOT NULL,
+    `roles` ENUM('Admin', 'User') NOT NULL DEFAULT 'User',
 
     UNIQUE INDEX `User_email_key`(`email`),
     PRIMARY KEY (`id`)
@@ -136,6 +137,15 @@ CREATE TABLE `Banner` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Menu` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(191) NOT NULL,
+    `parent_id` INTEGER NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Logo` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -192,6 +202,9 @@ ALTER TABLE `ProductTag` ADD CONSTRAINT `ProductTag_tags_id_fkey` FOREIGN KEY (`
 
 -- AddForeignKey
 ALTER TABLE `Subcategory` ADD CONSTRAINT `Subcategory_category_id_fkey` FOREIGN KEY (`category_id`) REFERENCES `Category`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Menu` ADD CONSTRAINT `Menu_parent_id_fkey` FOREIGN KEY (`parent_id`) REFERENCES `Menu`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_ProductToTag` ADD CONSTRAINT `_ProductToTag_A_fkey` FOREIGN KEY (`A`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -19,6 +19,7 @@ const createProduct = async (request, response) => {
       product_color,
       stock_type,
     } = request.body;
+    
 
     // Convert string to boolean value
     is_featured = is_featured === "true" ? true : false;
