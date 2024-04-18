@@ -71,6 +71,7 @@ model Product {
   product_weight      Decimal?
   product_size        Decimal?
   product_color       String?
+  product_hot         Boolean       @default(false)
   favourites          Favourites[]
   tags                Tag[]
   category            Category     @relation(fields: [category_id], references: [id])
@@ -115,6 +116,20 @@ model BillingAddress {
   email         String
   phone         String
 }
+
+// new added
+
+model ClientTestimonial {
+  id            Int      @id @default(autoincrement())
+  clientName    String
+  clientImage   String?
+  clientType    String?
+  clientRating  Int?
+  testimonial   String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+ 
 
 model Tag {
   id         Int          @id @default(autoincrement())

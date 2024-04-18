@@ -16,6 +16,7 @@ const resetpasswordtoken = async (userId) => {
         passwordResetTokenExpire: new Date(new Date().getTime() + 3600 * 1000),
       },
     });
+    
 
     return resettoken;
   } catch (error) {
