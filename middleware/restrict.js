@@ -5,7 +5,6 @@ const restrict = (role) => {
     if (request.user_roles == role) {
       next();
     } else {
-     
      response.json(apiresponse(400, "You are not allowed to delete this item."));
     }
   };

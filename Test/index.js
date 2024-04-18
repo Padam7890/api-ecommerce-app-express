@@ -77,7 +77,6 @@ const array2 = [123, 43, 45];
 
 // console.log(lengthOfLastWord("   fly me   to   the moon  "));
 
-
 // var containsDuplicate = function(nums) {
 //   let set = new Set();
 //   for (let i = 0; i < nums.length; i++) {
@@ -87,15 +86,28 @@ const array2 = [123, 43, 45];
 //     set.add(nums[i]);
 //   }
 //   return false;
-    
+
 // };
 
 // //result should be 4
-// [1,2,4] 
+// [1,2,4]
 
 
-const r = [1,2,3,4,5,3];
-const g = r[3];
+
+// const fs = require ('fs')
+
+// fs.readFile('hey.txt',  function (err,data)  {
+//     if (err) {
+//         return console.log(err);
+//     }
+//     console.log(data.toString());
+    
+// })
 
 
-console.log(g);
+
+
+const a = "2";
+let b ;
+ b= 4;
+console.log(a - b );

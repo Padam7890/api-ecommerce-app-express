@@ -18,16 +18,15 @@ const forgetPass = async (request, response) => {
     });
 
     if (!getuser) {
-      return response.json(
+      return response.status(404).json(
         apiresponse(404, "User not found", null, "User not found")
       );
     }
 
     const resetToken = await resetpasswordtoken(getuser.id);
+    const url =  "localhost:5174"
 
-    const resetUrl = `${request.protocol}://${request.get(
-      "host"
-    )}/auth/resetpassword/${resetToken}`;
+    const resetUrl = `${request.protocol}://${url}/auth/resetpassword/${resetToken}`;
 
     const emailTemplate = fs.readFileSync(
       path.join(

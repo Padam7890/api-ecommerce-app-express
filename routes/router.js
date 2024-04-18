@@ -8,8 +8,9 @@ const logoRoute = require("./logoRoute");
 const checkAuth = require("../middleware/auth");
 const orderRoute = require("./orderRoute")
 const menuRouter = require("./menuRoute")
-
+const mailRouter = require("./mailRouter");
 function LoadRoutes(app) {
+  app.use("/", mailRouter);
   app.use("/products" , ProductRouter);
   app.use("/categories", categoryRouter);
   app.use("/subcategories",subcategoryRoute)

@@ -7,6 +7,7 @@ const resetPassword = async (request, response) => {
   try {
     const { token } = request.params;
     const { password } = request.body;
+    console.log(request.body);
     const hastoken = crypto.createHash("sha256").update(token).digest("hex");
     const getuser = await user.findFirst({
       where: {
@@ -17,7 +18,7 @@ const resetPassword = async (request, response) => {
       },
     });
     if (!getuser) {
-      return response.json(
+      return response.status(404).json(
         apiresponse(404, "Token Invalid or expired", null, "Token not found")
       );
     }

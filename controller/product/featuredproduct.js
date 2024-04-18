@@ -9,6 +9,7 @@ const featuredproduct = async (request, response) => {
       where: {
         is_featured: true,
       },
+      take:5,
       include: {
         category: true,
         subcategory: true,
