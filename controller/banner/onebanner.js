@@ -8,6 +8,7 @@ const getonebanner = async(request,response)=> {
             where: {
                 id: parseInt(id),
             },
+
         });
         return response.json(apiresponse(200, "banner", getbanner, "banner"));
         
@@ -15,5 +16,6 @@ const getonebanner = async(request,response)=> {
         response.json(apiresponse(505, "banner error", error, "banner error"));
     }
 }
+
 
 module.exports = getonebanner;

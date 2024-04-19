@@ -9,6 +9,8 @@ const checkAuth = require("../middleware/auth");
 const orderRoute = require("./orderRoute")
 const menuRouter = require("./menuRoute")
 const mailRouter = require("./mailRouter");
+const adRoute = require("./adRoute");
+
 function LoadRoutes(app) {
   app.use("/", mailRouter);
   app.use("/products" , ProductRouter);
@@ -19,6 +21,7 @@ function LoadRoutes(app) {
   app.use('/logos', logoRoute)
   app.use('/order',orderRoute)
   app.use('/menu',menuRouter)
+  app.use("/advertisement", adRoute)
 
   
   /*

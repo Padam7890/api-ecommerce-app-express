@@ -25,7 +25,6 @@ model User {
   email                    String           @unique
   name                     String?
   password                 String
-  roles                    UserRole         @default(User)
   createdAt                DateTime         @default(now())
   passwordChangedAt        DateTime?
   passwordResetToken       String?
@@ -33,17 +32,30 @@ model User {
   favourites               Favourites[]
   orders                   Order[]
   billingAddress           BillingAddress[]
+  roles                    Role[]
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users       User[]
+  permissions Permission[]
+}
+
+model Permission {
+  id          Int      @id @default(autoincrement())
+  role        Role     @relation(fields: [role_id], references: [id])
+  role_id      Int
+  permission  String
+  @@unique([role_id, permission])
 }
 
 model Subscribe {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   createdAt DateTime @default(now())
-}
-
-enum UserRole {
-  Admin
-  User
 }
 
 model Favourites {
@@ -71,7 +83,7 @@ model Product {
   product_weight      Decimal?
   product_size        Decimal?
   product_color       String?
-  product_hot         Boolean       @default(false)
+  product_hot         Boolean      @default(false)
   favourites          Favourites[]
   tags                Tag[]
   category            Category     @relation(fields: [category_id], references: [id])
@@ -120,16 +132,15 @@ model BillingAddress {
 // new added
 
 model ClientTestimonial {
-  id            Int      @id @default(autoincrement())
-  clientName    String
-  clientImage   String?
-  clientType    String?
-  clientRating  Int?
-  testimonial   String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id           Int      @id @default(autoincrement())
+  clientName   String
+  clientImage  String?
+  clientType   String?
+  clientRating Int?
+  testimonial  String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
- 
 
 model Tag {
   id         Int          @id @default(autoincrement())
@@ -144,6 +155,16 @@ model ProductTag {
   tags_id    Int
   product    Product @relation(fields: [product_id], references: [id])
   tags       Tag     @relation(fields: [tags_id], references: [id])
+}
+
+model Ad {
+  id          Int       @id @default(autoincrement())
+  Title       String
+  subtitle    String
+  startTime   DateTime? 
+  endTime     DateTime?
+  description String?
+  url         String
 }
 
 model Category {

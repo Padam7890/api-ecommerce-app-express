@@ -24,6 +24,7 @@ async function updateProduct(request, response) {
       subcategory_id,
       product_tags,
       is_featured,
+      product_hot,
       product_sku,
       product_quantity,
       product_weight,
@@ -35,6 +36,8 @@ async function updateProduct(request, response) {
 
     // Convert string to boolean value
     is_featured = is_featured === "true" ? true : false;
+    product_hot = product_hot === "true" ? true : false;
+
 
     // Convert string to int
     product_sku = parseInt(product_sku, 10);
@@ -66,6 +69,7 @@ async function updateProduct(request, response) {
       regular_price,
       sale_price: sale_price || 0, // Set default value if sale_price is not provided
       is_featured,
+      product_hot: product_hot, 
       product_sku,
       product_quantity,
       product_weight,

@@ -6,20 +6,21 @@ const getorders = async (request, response) => {
   try {
     const { user_id, items, billingAddress } = request.body;
     console.log(request.body);
+
     const takeorder = await order.create({
       data: {
-        user: { connect: { id: user_id } },
+        user: { connect: { id: parseInt(user_id)  } },
         totalPrice: calculateTotalPrice(items),
         orderitems: {
           create: items.map((item) => ({
-            product: { connect: { id: item.product_id } },
+            product: { connect: { id: parseInt(item.product_id) } },
             quantity: item.quantity,
             price: item.price,
           })),
         },
         billingAddress: {
           create: {
-            user: { connect: { id: user_id } },
+            user: { connect: { id: parseInt(user_id) } },
             firstName: billingAddress.firstName,
             lastName: billingAddress.lastName,
             streetAddress: billingAddress.streetAddress,

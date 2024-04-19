@@ -28,6 +28,7 @@ const updateBanner = async (request, response) => {
         imageUrl: imagePath,
       },
     });
+    
     console.log("Updated Banner:", updatedBanner);
 
     response.json(
