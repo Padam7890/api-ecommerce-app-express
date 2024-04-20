@@ -7,6 +7,7 @@ const createad = async (request, response) => {
   try {
     const { Title, subtitle, description, startTime, endTime } = request.body;
     console.log(request.body);
+    
     const url = request.file;
 
 

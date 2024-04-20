@@ -10,6 +10,7 @@ const orderRoute = require("./orderRoute")
 const menuRouter = require("./menuRoute")
 const mailRouter = require("./mailRouter");
 const adRoute = require("./adRoute");
+const cilentsRoute = require("./cilentRoute");
 
 function LoadRoutes(app) {
   app.use("/", mailRouter);
@@ -22,6 +23,7 @@ function LoadRoutes(app) {
   app.use('/order',orderRoute)
   app.use('/menu',menuRouter)
   app.use("/advertisement", adRoute)
+  app.use('/cilents',cilentsRoute)
 
   
   /*

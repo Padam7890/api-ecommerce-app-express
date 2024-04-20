@@ -24,7 +24,7 @@ const updateBanner = async (request, response) => {
       data: {
         title,
         subtitle,
-          url,
+        url,
         imageUrl: imagePath,
       },
     });
