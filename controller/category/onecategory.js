@@ -12,22 +12,11 @@ async function getCategoryByID(request, response) {
       where: { id: parseInt(id) },
     });
 
-    const images = await uploadimage.findFirst({
-      where: {
-        type_id: category.id,
-        type: IMAGE_TYPE.category,
-      },
-    });
-
     if (!category) {
       return response.json(apiresponse(404, "Not Found",));
     }
-    const catwithimage = {
-      ...categories,
-      image: images,
-    };
 
-    response.json(apiresponse(200, "OK", catwithimage, "category"))
+    response.json(apiresponse(200, "OK", categories, "category"))
 
   } catch (error) {
     console.error("Error fetching category and image:", error);

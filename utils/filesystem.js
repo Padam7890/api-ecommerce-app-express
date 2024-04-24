@@ -3,7 +3,9 @@ const fs = require ('fs/promises')
 
 const deletefile = async (imageUrl)=>{
     try {
+      console.log(imageUrl);
        const data = await fs.unlink('.' + imageUrl);
+       console.log("sucessfully deleted",data);
        return data;
     } catch (error) {
          console.log(error);

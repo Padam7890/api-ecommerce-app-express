@@ -1,22 +1,56 @@
 -- CreateTable
-CREATE TABLE `Image` (
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `url` VARCHAR(191) NOT NULL,
-    `type` ENUM('Category', 'Product', 'Subcategory') NOT NULL,
-    `type_id` INTEGER NOT NULL,
-
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `email` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `password` VARCHAR(191) NOT NULL,
-    `roles` ENUM('Admin', 'User') NOT NULL DEFAULT 'User',
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `passwordChangedAt` DATETIME(3) NULL,
+    `passwordResetToken` VARCHAR(191) NULL,
+    `passwordResetTokenExpire` DATETIME(3) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Role` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Role_name_key`(`name`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Permission` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `permission` VARCHAR(191) NOT NULL,
+    `slug` VARCHAR(191) NOT NULL,
+
+    UNIQUE INDEX `Permission_permission_key`(`permission`),
+    UNIQUE INDEX `Permission_slug_key`(`slug`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `RolePermission` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `role_id` INTEGER NOT NULL,
+    `permission_id` INTEGER NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `Subscribe` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `Subscribe_email_key`(`email`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -46,6 +80,16 @@ CREATE TABLE `Product` (
     `product_weight` DECIMAL(65, 30) NULL,
     `product_size` DECIMAL(65, 30) NULL,
     `product_color` VARCHAR(191) NULL,
+    `product_hot` BOOLEAN NOT NULL DEFAULT false,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `ProductsImages` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `imageUrl` VARCHAR(191) NOT NULL,
+    `product_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -91,6 +135,20 @@ CREATE TABLE `BillingAddress` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `ClientTestimonial` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `clientName` VARCHAR(191) NOT NULL,
+    `clientImage` VARCHAR(191) NULL,
+    `clientType` VARCHAR(191) NULL,
+    `clientRating` INTEGER NULL,
+    `testimonial` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Tag` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
@@ -109,9 +167,23 @@ CREATE TABLE `ProductTag` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Ad` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `Title` VARCHAR(191) NOT NULL,
+    `subtitle` VARCHAR(191) NOT NULL,
+    `startTime` DATETIME(3) NULL,
+    `endTime` DATETIME(3) NULL,
+    `description` VARCHAR(191) NULL,
+    `url` VARCHAR(191) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Category` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `category_name` VARCHAR(191) NOT NULL,
+    `imageUrl` VARCHAR(191) NULL,
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -120,6 +192,7 @@ CREATE TABLE `Category` (
 CREATE TABLE `Subcategory` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `subcategory_name` VARCHAR(191) NOT NULL,
+    `imageUrl` VARCHAR(191) NULL,
     `category_id` INTEGER NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -156,6 +229,15 @@ CREATE TABLE `Logo` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `_RoleToUser` (
+    `A` INTEGER NOT NULL,
+    `B` INTEGER NOT NULL,
+
+    UNIQUE INDEX `_RoleToUser_AB_unique`(`A`, `B`),
+    INDEX `_RoleToUser_B_index`(`B`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `_ProductToTag` (
     `A` INTEGER NOT NULL,
     `B` INTEGER NOT NULL,
@@ -163,6 +245,12 @@ CREATE TABLE `_ProductToTag` (
     UNIQUE INDEX `_ProductToTag_AB_unique`(`A`, `B`),
     INDEX `_ProductToTag_B_index`(`B`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- AddForeignKey
+ALTER TABLE `RolePermission` ADD CONSTRAINT `RolePermission_role_id_fkey` FOREIGN KEY (`role_id`) REFERENCES `Role`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `RolePermission` ADD CONSTRAINT `RolePermission_permission_id_fkey` FOREIGN KEY (`permission_id`) REFERENCES `Permission`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Favourites` ADD CONSTRAINT `Favourites_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -178,6 +266,9 @@ ALTER TABLE `Product` ADD CONSTRAINT `Product_category_id_fkey` FOREIGN KEY (`ca
 
 -- AddForeignKey
 ALTER TABLE `Product` ADD CONSTRAINT `Product_subcategory_id_fkey` FOREIGN KEY (`subcategory_id`) REFERENCES `Subcategory`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `ProductsImages` ADD CONSTRAINT `ProductsImages_product_id_fkey` FOREIGN KEY (`product_id`) REFERENCES `Product`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Order` ADD CONSTRAINT `Order_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -205,6 +296,12 @@ ALTER TABLE `Subcategory` ADD CONSTRAINT `Subcategory_category_id_fkey` FOREIGN 
 
 -- AddForeignKey
 ALTER TABLE `Menu` ADD CONSTRAINT `Menu_parent_id_fkey` FOREIGN KEY (`parent_id`) REFERENCES `Menu`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_RoleToUser` ADD CONSTRAINT `_RoleToUser_A_fkey` FOREIGN KEY (`A`) REFERENCES `Role`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `_RoleToUser` ADD CONSTRAINT `_RoleToUser_B_fkey` FOREIGN KEY (`B`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `_ProductToTag` ADD CONSTRAINT `_ProductToTag_A_fkey` FOREIGN KEY (`A`) REFERENCES `Product`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;

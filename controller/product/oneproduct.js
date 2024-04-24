@@ -16,29 +16,16 @@ const getProductByID = async (request, response) => {
             include: {
               tags: true
             }
-          }
+          },
+          images:true
         },
       });
   
       if (!product) {
         return response.status(404).json({ error: 'Product not found' });
       }
-  
-      // Fetch associated images for the product where type is 'Product'
-      const productImages = await prisma.image.findMany({
-        where: {
-          type: IMAGE_TYPE.product,
-          type_id: parseInt(id)
-        }
-      });
-  
-      // Add the images to the product object
-      const productWithImages = {
-        ...product,
-        images: productImages
-      };
-  
-      response.json({ product: productWithImages });
+     
+      response.json({ product: product });
     } catch (error) {
       console.error(error);
       response.status(500).json({ error: 'Internal Server Error' });

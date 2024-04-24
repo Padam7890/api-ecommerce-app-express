@@ -18,11 +18,11 @@ const featuredproduct = async (request, response) => {
             tags: true,
           },
         },
+        images:true,
       },
     });
      
     //product images
-    const productsWithImagesInfo = await getproductimages(featuredProducts);
 
     //default if product is not avilable 
     if (!featuredProducts.length) {
@@ -32,7 +32,7 @@ const featuredproduct = async (request, response) => {
     //check already send or not 
     if (!response.headersSent) {
       response.json(
-        apiresponse(200, "product", productsWithImagesInfo, "products")
+        apiresponse(200, "product", featuredProducts, "products")
       );
     }
   } catch (error) {

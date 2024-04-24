@@ -36,16 +36,15 @@ const popularProduct = async (request, response) => {
             tags: true,
           },
         },
+        images: true,
       },
     });
 
     if (!products) {
       return response.status(404).json({ error: "No products found" });
     }
-    const productsWithImagesInfo = await getproductimages(products);
-
     return response.json(
-      apiresponse(200, "Product Success", productsWithImagesInfo, "products")
+      apiresponse(200, "Product Success", products, "products")
     );
   } catch (error) {
     console.error("Error fetching popular products:", error);

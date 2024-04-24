@@ -1,5 +1,7 @@
+const saveimagePath = require("../../config/imagepath");
 const { prisma } = require("../../config/prisma");
 const { IMAGE_TYPE } = require("../../constants/enums");
+const subcategory = require("../../model/subcategory");
 
 
 async function storesubcategory(request, response) {
@@ -9,29 +11,20 @@ async function storesubcategory(request, response) {
     const { category_id } = request.body;
 
     const categoryId = parseInt(category_id, 10);
-  
-    const subcat = await prisma.subcategory.create({
+    const image = request.file;
+    const imagePath = saveimagePath(image);
+    const subcat = await subcategory.create({
       data: {
         subcategory_name: subcategory_name,
         category_id: categoryId,
+        imageUrl: imagePath
       },
     });
 
-    const image = request.file;
-    const imagePath = "/storage/" + image.filename;
-
-     const saveimage = await prisma.image.create({
-        data: {
-          url: imagePath,
-          type:IMAGE_TYPE.subCategory,
-          type_id: subcat.id
-        },
- 
-     })
-    response.json({
+      response.json({
       subcategory: subcat,
       message: "Subcategory added successfully",
-      image: saveimage,
+      image: imagePath,
     });
   }
 

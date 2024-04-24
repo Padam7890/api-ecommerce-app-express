@@ -16,14 +16,8 @@ const createCategory = async (request, response) => {
   const createcategories = await category.create({
     data: {
       category_name: category_name,
-    },
-  });
+      imageUrl: imagePath,
 
-  await uploadimage.create({
-    data: {
-      url: imagePath,
-      type: IMAGE_TYPE.category,
-      type_id: createcategories.id,
     },
   });
 

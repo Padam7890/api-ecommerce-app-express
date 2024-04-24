@@ -9,7 +9,6 @@ const searchproduct = async (request, response) => {
       where: {
         product_title: {
           contains: search,
-        
         },
       },
     });

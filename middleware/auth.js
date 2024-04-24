@@ -14,9 +14,8 @@ const checkAuth = (request, response, next) => {
     // Verify the JWT token
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     
-    request.user_id = decoded.id;
-    request.user_roles = decoded.roles;
-
+    request.user = decoded;
+    
     next();
   } catch (error) {
     response.status(401).json({ message: "Invalid token" });

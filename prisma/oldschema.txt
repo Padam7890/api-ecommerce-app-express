@@ -7,6 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Image {
+  id      Int       @id @default(autoincrement())
+  url     String
+  type    ImageType
+  type_id Int
+}
+
+enum ImageType {
+  Category
+  Product
+  Subcategory
+}
+
 model User {
   id                       Int              @id @default(autoincrement())
   email                    String           @unique
@@ -23,27 +36,27 @@ model User {
 }
 
 model Role {
-  id          Int              @id @default(autoincrement())
-  name        String           @unique
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-  users       User[]
-  permissions RolePermission[]
+  id        Int              @id @default(autoincrement())
+  name      String           @unique
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  users     User[]
+  permisson RolePermission[]
 }
 
 model Permission {
-  id         Int              @id @default(autoincrement())
-  permission String           @unique
-  slug       String           @unique
-  roles      RolePermission[]
+  id        Int    @id @default(autoincrement())
+  permisson String @unique
+  slug      String @unique
+  roles     RolePermission[]
 }
 
 model RolePermission {
-  id            Int        @id @default(autoincrement())
+  id            Int  @id @default(autoincrement())
   role_id       Int
   permission_id Int
-  Role          Role       @relation(fields: [role_id], references: [id])
-  Permission    Permission @relation(fields: [permission_id], references: [id])
+  Role          Role @relation(fields: [role_id], references: [id])
+  Permission     Permission @relation(fields: [permission_id], references: [id])
 }
 
 model Subscribe {
@@ -63,35 +76,27 @@ model Favourites {
 }
 
 model Product {
-  id                  Int              @id @default(autoincrement())
+  id                  Int          @id @default(autoincrement())
   product_title       String
-  product_description String           @db.Text
+  product_description String       @db.Text
   regular_price       Decimal
   sale_price          Decimal
   product_sku         Int?
   stock_type          String
   category_id         Int
   subcategory_id      Int?
-  is_featured         Boolean          @default(false)
+  is_featured         Boolean      @default(false)
   product_quantity    Decimal?
   product_weight      Decimal?
   product_size        Decimal?
   product_color       String?
-  product_hot         Boolean          @default(false)
+  product_hot         Boolean      @default(false)
   favourites          Favourites[]
   tags                Tag[]
-  category            Category         @relation(fields: [category_id], references: [id])
-  subcategory         Subcategory?     @relation(fields: [subcategory_id], references: [id])
+  category            Category     @relation(fields: [category_id], references: [id])
+  subcategory         Subcategory? @relation(fields: [subcategory_id], references: [id])
   ProductTag          ProductTag[]
   OrderItem           OrderItem[]
-  images              ProductsImages[]
-}
-
-model ProductsImages {
-  id         Int     @id @default(autoincrement())
-  imageUrl   String
-  product    Product @relation(fields: [product_id], references: [id])
-  product_id Int
 }
 
 model Order {
@@ -173,7 +178,6 @@ model Category {
   id            Int           @id @default(autoincrement())
   category_name String
   products      Product[]
-  imageUrl      String?
   favourites    Favourites[]
   subcategories Subcategory[]
 }
@@ -181,7 +185,6 @@ model Category {
 model Subcategory {
   id               Int       @id @default(autoincrement())
   subcategory_name String
-  imageUrl         String?
   category_id      Int
   products         Product[]
   category         Category  @relation(fields: [category_id], references: [id])

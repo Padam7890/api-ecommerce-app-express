@@ -2,33 +2,21 @@ const { prisma } = require("../../config/prisma");
 const { IMAGE_TYPE } = require("../../constants/enums");
 
 async function getsubcaregoryById(request, response) {
-    const { id } = request.params;
-    try {
-      const subcat = await prisma.subcategory.findUnique({
-        where: { id: parseInt(id) },
-      });
-  
-      const image = await prisma.image.findFirst({
-        where: {
-          type_id: subcat.id,
-          type:IMAGE_TYPE.subCategory
-        }
-      });
-  
-      if (!subcat) {
-        return response.status(404).json({ error: "subcat not found" });
-      } 
-      
-      const subcatwithimage = {
-        ...subcat,
-        image: image,
-      };
-  
-      response.json({ subcat: subcatwithimage });
-    } catch (error) {
-      console.error("Error fetching Subcategory and image:", error);
-      response.status(500).json({ error: "Internal server error" });
+  const { id } = request.params;
+  try {
+    const subcat = await prisma.subcategory.findUnique({
+      where: { id: parseInt(id) },
+    });
+
+    if (!subcat) {
+      return response.status(404).json({ error: "subcat not found" });
     }
+
+    response.json({ subcat: subcat });
+  } catch (error) {
+    console.error("Error fetching Subcategory and image:", error);
+    response.status(500).json({ error: "Internal server error" });
+  }
 }
 
 module.exports = getsubcaregoryById;

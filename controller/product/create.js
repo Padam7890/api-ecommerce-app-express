@@ -132,11 +132,10 @@ const createProduct = async (request, response) => {
     if (productImages.length > 0) {
       for (const image of productImages) {
         const imagePath = "/storage/" + image.filename;
-        await prisma.image.create({
+        await prisma.productsImages.create({
           data: {
-            type_id: product.id,
-            url: imagePath,
-            type: IMAGE_TYPE.product,
+            imageUrl: imagePath,
+            product_id: product.id,
           },
         });
       }

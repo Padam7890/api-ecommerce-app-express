@@ -13,14 +13,15 @@ const getAllProducts = async (request, response) => {
             tags: true,
           },
         },
+        images:true,
+
       },
     });
     if (!productsWithImages) {
       return response.status(404).json({ error: "No products found" });
     }
-    const productsWithImagesInfo = await getproductimages(productsWithImages);
     return response.json(
-      apiresponse(200, "Product List", productsWithImagesInfo, "products")
+      apiresponse(200, "Product List", productsWithImages, "products")
     );
   } catch (error) {
     console.error("Error fetching products with images:", error);

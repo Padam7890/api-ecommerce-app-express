@@ -2,10 +2,12 @@ const fs = require("fs/promises");
 const { prisma } = require("../../config/prisma");
 const uploadimage = require("../../model/image");
 const { apiresponse } = require("../../utils/apiresponse");
+const productsImages = require("../../model/image");
+const { deletefile } = require("../../utils/filesystem");
 
 const deleteimage = async (request, response) => {
   const { id } = request.params;
-  const image = await uploadimage.findUnique({
+  const image = await productsImages.findUnique({
     where: {
       id: parseInt(id),
     },
@@ -15,18 +17,11 @@ const deleteimage = async (request, response) => {
     return response.json(apiresponse(400,"image not found"))
   }  
   
-  try {
-    const filepath = '.' +  image.url
-    await fs.unlink(filepath);
-  } catch (error) {
-    console.error("Unable to unlink/delete image:", image.url, error);
-    return response.json(apiresponse(500,"failed to delete image"))
-
-  }
+  await deletefile(image.imageUrl);
 
   // Delete the image record from the database
   try {
-    await uploadimage.delete({
+    await productsImages.delete({
       where: {
         id: parseInt(id),
       },

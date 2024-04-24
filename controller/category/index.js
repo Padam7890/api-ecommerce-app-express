@@ -7,24 +7,8 @@ const { apiresponse } = require("../../utils/apiresponse");
 
 async function getAllCategory(request, response) {
   try {
-    const categories = await category.findMany({
-    });
-    
-    const categoriesWithImages = await Promise.all(categories.map(async category => {
-      const images = await uploadimage.findMany({
-        where: {
-          type_id: category.id,
-          type:IMAGE_TYPE.category
-        },
-      });
-      
-      
-      return {
-        ...category,
-        image: images
-      };
-    }));
-     response.json(apiresponse(200, "OK", categoriesWithImages, "categories"))
+    const categories = await category.findMany({});
+     response.json(apiresponse(200, "OK", categories, "categories"))
   } catch (error) {
     console.error("Error fetching categories with images:", error);
     response.json(apiresponse(500,"Internal server error",  error,  "error"))

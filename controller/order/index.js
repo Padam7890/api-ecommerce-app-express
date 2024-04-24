@@ -8,11 +8,16 @@ const getOrderfromdb = async (request, response) => {
         user: true,
         orderitems: {
           include: {
-            product: true,
+            product: {
+              include: {
+                category: true,
+                subcategory: true,
+                images:true,
+              },
+            },
           },
         },
         billingAddress: true,
-
       },
     });
 

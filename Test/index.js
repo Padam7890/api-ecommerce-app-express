@@ -92,8 +92,6 @@ const array2 = [123, 43, 45];
 // //result should be 4
 // [1,2,4]
 
-
-
 // const fs = require ('fs')
 
 // fs.readFile('hey.txt',  function (err,data)  {
@@ -101,13 +99,66 @@ const array2 = [123, 43, 45];
 //         return console.log(err);
 //     }
 //     console.log(data.toString());
-    
+
 // })
 
+// const a = "2";
+// let b ;
+//  b= 4;
+
+// function savetoDB(data, sucess, failure) {
+//   let internetSpeed = Math.floor(Math.random() * 10) + 1;
+//   if (internetSpeed > 4) {
+//     sucess();
+//   } else {
+//     failure();
+//   }
+// }
+// savetoDB(
+//   "My Name",
+//   () => {
+//     console.log("your data was saved");
+//     savetoDB("Hello world", ()=> {
+//         console.log("your data was saved");
+//     })
+//   },
+//   () => {
+//     console.log("your data was not saved");
+//   }
+// );
 
 
+//promises 
 
-const a = "2";
-let b ;
- b= 4;
-console.log(a - b );
+// const promises  = new Promise((resolve, reject) => {
+//    const data =  console.log("your data was saved");
+//    resolve(data);
+//    reject(new Error("your data was not saved"));
+
+// }
+// ).then(()=>{
+//   console.log("Promise resolved");
+// }).catch((err)=>{
+//   console.log("Promise rejected");
+// });
+
+//shallow copy and deep copy
+var obj = {
+  name: "padam",
+  age: 23,
+  city: {
+    name: "delhi",
+    state: "delhi"
+  }
+};
+
+const a = {...obj}
+a.age = 20;
+
+console.log(a);
+
+var c = JSON.parse(JSON.stringify(obj));
+
+console.log(c);
+
+//shallow copy 

@@ -1,5 +1,5 @@
 const { prisma } = require("../config/prisma");
 
-const uploadimage = prisma.image;
+const productsImages = prisma.productsImages;
 
-module.exports = uploadimage;
+module.exports = productsImages;
