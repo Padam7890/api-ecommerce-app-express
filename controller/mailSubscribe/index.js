@@ -9,8 +9,6 @@ const path = require("path");
 const mailsubscribe = async (request, response) => {
   try {
     const { email } = request.body;
-
-    // Check if email is already subscribed
     const checkemaildb = await subscribe.findUnique({
       where: {
         email: email,

@@ -1,3 +1,4 @@
+const { exclude } = require("../../config/prisma");
 const order = require("../../model/order");
 const { apiresponse } = require("../../utils/apiresponse");
 
@@ -12,7 +13,7 @@ const getOrderfromdb = async (request, response) => {
               include: {
                 category: true,
                 subcategory: true,
-                images:true,
+                images: true,
               },
             },
           },
@@ -21,8 +22,13 @@ const getOrderfromdb = async (request, response) => {
       },
     });
 
+    const orderswithourpass = getorders.map((order) => ({
+      ...order,
+      user: exclude(order.user, "password"),
+    }));
+
     response.json(
-      apiresponse(200, "Successfully Fetched Orders", getorders, "order")
+      apiresponse(200, "Successfully Fetched Orders", orderswithourpass, "order")
     );
   } catch (error) {
     response.json(apiresponse(500, "order error", error, "order error"));

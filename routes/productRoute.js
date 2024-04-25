@@ -18,7 +18,7 @@ router.get('/featured_products' , featuredproduct);
 router.get('/popular_products' , popularProduct)
 router.get('/search', searchproduct );
 router.get('/filterbyprice', priceFilter)
-router.get("/", checkAuth, checkPermission(['read', 'create']), getAllProducts);
+router.get("/", getAllProducts);
 router.get("/:id", getProductByID);
 router.post("/", upload.array("product_image", 10), createProduct);
 router.put("/:id", checkAuth, checkPermission(['update']),  upload.array("product_image", 10), updateProduct);

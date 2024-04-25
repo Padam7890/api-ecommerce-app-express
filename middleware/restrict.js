@@ -23,6 +23,7 @@ const checkPermission = (permissions) => {
         },
       });
 
+
       const hasPermissions = permissions.every((permission) =>
         user.roles.some((role) =>
           // console.log(role.permissions)
