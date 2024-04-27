@@ -17,9 +17,6 @@ async function updateCategory(request, response) {
 
     if (image) {
       imagePath = saveimagePath(image);
-      console.log("Saved Image Path:", imagePath);
-    } else {
-      console.log("No new image uploaded.");
     }
 
     const updatedCategory = await category.update({
@@ -40,7 +37,7 @@ async function updateCategory(request, response) {
     );
   } catch (error) {
     console.error("Error updating category:", error);
-    response.json(apiresponse(500, "Internal Server Error"));
+    response.status(500).json(apiresponse(500, "Internal Server Error"));
   }
 }
 

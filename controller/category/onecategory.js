@@ -20,7 +20,7 @@ async function getCategoryByID(request, response) {
 
   } catch (error) {
     console.error("Error fetching category and image:", error);
-    response.json(apiresponse(500, "Internal Server Error", error));
+    response.status(500).json(apiresponse(500, "Internal Server Error", error));
   }
 }
 

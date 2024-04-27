@@ -4,26 +4,27 @@ const { apiresponse } = require("../../utils/apiresponse");
 
 const updatead = async (request, response) => {
   try {
+
+    //get all details from request
     const { id } = request.params;
     const { Title, subtitle, description, startTime, endTime, imageUrl } =
       request.body;
 
-      console.log(request.body);
+    console.log(request.body);
 
+    //time fomating before updating to database
     const timestart = startTime ? new Date(startTime).toISOString() : null;
     const timeend = endTime ? new Date(endTime).toISOString() : null;
 
     const url = request.file;
-
     let imagePath = imageUrl;
 
+    //check if new image is uploaded
     if (url) {
       imagePath = saveimagePath(url);
-      console.log("Saved Image Path:", imagePath);
-    } else {
-      console.log("No new image uploaded.");
     }
-    console.log(imagePath);
+
+    //update to database advertisment
     const adupdate = await ad.update({
       where: {
         id: parseInt(id),
@@ -37,7 +38,8 @@ const updatead = async (request, response) => {
         url: imagePath,
       },
     });
-    console.log(adupdate);
+
+    //Sucess responses
     response
       .status(200)
       .json(apiresponse(200, "Advertisement updated successfully", adupdate));

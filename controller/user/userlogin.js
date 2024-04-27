@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const { hashPassword } = require("../../utils/passwordhash");
+const { apiresponse } = require("../../utils/apiresponse");
 
 async function login(request, response) {
   const { email, password } = request.body;
@@ -21,15 +22,14 @@ async function login(request, response) {
   });
 
   if (!userExists) {
-    response.json({ message: "User does not exist" });
-    return;
+    return response.status(404).json(apiresponse(404, "User not found"));
   }
+  
 
   const isPasswordValid = await bcrypt.compare(password, userExists.password);
 
   if (!isPasswordValid) {
-    response.json({ message: "Incorrect Password" });
-    return;
+    return response.status(404).json({ message: "Incorrect Password" });
   }
 
   // Sign the JWT token with user ID and roles
@@ -40,8 +40,29 @@ async function login(request, response) {
       expiresIn: "1h",
     }
   );
+  //creating refresh token not that expiry
+  const refreshToken = jwt.sign(
+    { id: userExists.id, roles: userExists.roles },
+    process.env.JWT_REFRESH_SECRET_KEY,
+    {
+      expiresIn: "1d",
+    }
+  );
+  response.cookie('jwt', refreshToken,{
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    maxAge: 1000 * 60 * 60 * 24 * 1,
+  } )
 
-  response.json({ message: "Success", token: jwtToken, user: userExists });
+  console.log("refreshToken" + refreshToken, "accesstoken"+jwtToken);
+
+  response.json({
+    message: "Success",
+    refreshToken: refreshToken,
+    accessToken: jwtToken,
+    user: userExists,
+  });
 }
 
 module.exports = login;

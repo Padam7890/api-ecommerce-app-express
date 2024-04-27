@@ -8,20 +8,31 @@ const image = require("../../model/image");
 const { apiresponse } = require("../../utils/apiresponse");
 
 const createCategory = async (request, response) => {
-  const { category_name } = request.body;
-  const image = request.file;
+  try {
+    const { category_name } = request.body;
+    const image = request.file;
 
-  const imagePath = saveimagePath(image);
+    const imagePath = saveimagePath(image);
 
-  const createcategories = await category.create({
-    data: {
-      category_name: category_name,
-      imageUrl: imagePath,
+    const createcategories = await category.create({
+      data: {
+        category_name: category_name,
+        imageUrl: imagePath,
+      },
+    });
 
-    },
-  });
-
-  response.json(apiresponse(200,"Category added successfully", createcategories,"category" ))
+    response.json(
+      apiresponse(
+        200,
+        "Category added successfully",
+        createcategories,
+        "category"
+      )
+    );
+  } catch (error) {
+    console.error("Error creating category:", error);
+    response.status(500).json(apiresponse(500, "Internal Server Error", error));
+  }
 };
 
 module.exports = createCategory;

@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const cookieparser = require('cookie-parser');
+
 
 const dotenv = require("dotenv");
 const LoadRoutes = require("./routes/router");
@@ -9,6 +11,9 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
+app.use(cookieparser());
+
+
 
 //limit the number of json requests
 app.use(

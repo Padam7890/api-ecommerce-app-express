@@ -3,6 +3,7 @@ const ad = require("../../model/ad");
 const { apiresponse } = require("../../utils/apiresponse");
 
 const getadvertisment = async (request, response) => {
+  //Get all advertisment from database
   try {
     const advertisment = await ad.findMany({});
     return response.json(apiresponse(200, "advertisment", advertisment, "advertisment"));

@@ -1,13 +1,9 @@
 const { prisma } = require("../../config/prisma");
-const fs = require("fs/promises");
-const { IMAGE_TYPE } = require("../../constants/enums");
 const { deletefiles } = require("../../utils/filesystem");
 const product = require("../../model/product");
 const subcategory = require("../../model/subcategory");
 const category = require("../../model/category");
-const image = require("../../model/image");
 const { apiresponse } = require("../../utils/apiresponse");
-const uploadimage = require("../../model/image");
 
 
 async function deleteCategory(request, response) {
@@ -65,7 +61,7 @@ async function deleteCategory(request, response) {
     response.json(apiresponse(200, "Category deleted successfully", null, "category"));
   } catch (error) {
     console.error("Error deleting category:", error);
-    response.json(apiresponse(500, "Internal Server Error"));
+    response.status(500).json(apiresponse(500, "Internal Server Error"));
   }
 }
 module.exports = deleteCategory;

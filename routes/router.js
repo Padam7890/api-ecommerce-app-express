@@ -14,16 +14,16 @@ const cilentsRoute = require("./cilentRoute");
 
 function LoadRoutes(app) {
   app.use("/", mailRouter);
-  app.use("/products" , ProductRouter);
-  app.use("/categories", categoryRouter);
-  app.use("/subcategories",subcategoryRoute)
-  app.use('/image', imageRoute)
-  app.use('/banner',  bannerRoute)
-  app.use('/logos', logoRoute)
-  app.use('/order',orderRoute)
-  app.use('/menu',menuRouter)
-  app.use("/advertisement", adRoute)
-  app.use('/cilents',cilentsRoute)
+  app.use("/products" , checkAuth, ProductRouter);
+  app.use("/categories", checkAuth, categoryRouter);
+  app.use("/subcategories", checkAuth,  subcategoryRoute)
+  app.use('/image', checkAuth, imageRoute)
+  app.use('/banner', checkAuth,  bannerRoute)
+  app.use('/logos', checkAuth, logoRoute)
+  app.use('/order', checkAuth, orderRoute)
+  app.use('/menu', checkAuth, menuRouter)
+  app.use("/advertisement", checkAuth, adRoute)
+  app.use('/cilents',checkAuth, cilentsRoute)
 
   
   /*

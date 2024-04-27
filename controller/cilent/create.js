@@ -7,14 +7,12 @@ const cilentcreate = async (request, response) => {
   try {
     const { clientName, clientType, clientRating, testimonial } = request.body;
     const clientImage = request.file;
-    console.log(request.body);
-    console.log(clientImage);
-    const saveclientImage = saveimagePath(clientImage)
+
+    const saveclientImage = saveimagePath(clientImage);
     if (!clientImage) {
-      return response.json("Missing client image")
-      
+      return response.json("Missing client image");
     }
-    
+
     const convertclientRating = parseInt(clientRating, 10);
 
     const client = await clientTestimonial.create({
@@ -23,7 +21,7 @@ const cilentcreate = async (request, response) => {
         clientType,
         clientRating: convertclientRating,
         testimonial,
-        clientImage:saveclientImage,
+        clientImage: saveclientImage,
       },
     });
     response.json({

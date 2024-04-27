@@ -2,6 +2,7 @@ const ad = require("../../model/ad");
 const { apiresponse } = require("../../utils/apiresponse");
 
 const editad = async(request,response)=>{
+    //response edit request
     try {
         const {id} = request.params;
         const editad = await ad.findUnique({

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const checkAuth = (request, response, next) => {
   let token = request.headers.authorization;
    console.log(token);
+   
   if (!token) {
     response.status(401).json({ message: "Not Logged in" });
     return;

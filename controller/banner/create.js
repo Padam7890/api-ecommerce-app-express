@@ -6,13 +6,10 @@ const { apiresponse } = require("../../utils/apiresponse");
 
 const createbanner = async (request, response) => {
   try {
-    console.log('request', request);
+    
     let { title, subtitle, url } = request.body;
     const image = request.file;
-    console.log(image);
-    console.log(request.body);
     const imagePath = saveimagePath(image);
-    console.log({ title, subtitle, url, imagePath });
     const banners = await banner.create({
       data: {
         title,
@@ -24,7 +21,7 @@ const createbanner = async (request, response) => {
     response.json(apiresponse(201, "Banner created successfully",banners))
   } catch (error) {
     console.log(error);
-    response.json(apiresponse(500, "Banner created successfully"))
+    response.status(500).json(apiresponse(500, "Banner Error",error))
   }
 };
 
