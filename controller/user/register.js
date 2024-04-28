@@ -35,7 +35,7 @@ async function register(request, response) {
 
     // Sign the JWT token with user ID and roles
     const jwtToken = jwt.sign(
-      { id: userExists.id, roles: userExists.roles },
+      { id: newUser.id, roles: newUser.roles },
       process.env.JWT_SECRET_KEY,
       {
         expiresIn: "1h",
