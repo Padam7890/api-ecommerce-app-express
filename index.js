@@ -45,6 +45,10 @@ app.post('/seed', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+app.get('/seed', (req,res)=> {
+
+  return res.json({ message: "hey"})
+})
 
 
 app.listen(3000, () => {
