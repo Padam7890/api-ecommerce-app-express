@@ -13,10 +13,10 @@ async function updateCategory(request, response) {
     const { category_name, imageUrl } = request.body;
 
     let imagePath = imageUrl;
-    const image = request.file;
+    const image = request.cloudinaryUrl;
 
     if (image) {
-      imagePath = saveimagePath(image);
+      imagePath = image;
     }
 
     const updatedCategory = await category.update({

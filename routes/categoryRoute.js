@@ -8,12 +8,13 @@ const getCategoryByID = require("../controller/category/onecategory")
 const deleteCategory = require("../controller/category/delete");
 const checkAuth = require("../middleware/auth");
 const restrict = require("../middleware/restrict");
+const uploadToCloudinary = require("../middleware/cloudsave");
 
 router.get("/", getAllCategory);
 router.get("/:id", getCategoryByID);
-router.post("/", upload.single("image") , createCategory);
-router.put("/:id", upload.single("image"), updateCategory);
-router.delete("/:id", checkAuth, restrict("Admin"), deleteCategory);
+router.post("/", upload.single("image") , uploadToCloudinary, createCategory);
+router.put("/:id", upload.single("image"),uploadToCloudinary, updateCategory);
+router.delete("/:id", checkAuth,  restrict(["admin"]), deleteCategory);
 
 module.exports = router;
 

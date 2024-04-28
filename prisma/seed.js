@@ -160,17 +160,7 @@ const usertoAdmin = async (request, response) => {
       });
       
     }
-
-    // await prisma.user.update({
-    //   where: { id: parseInt(id) },
-    //   data: {
-    //     roles: {
-    //       connect: {
-    //         id: adminRole.id,
-    //       },
-    //     },
-    //   },
-    // });
+    
     return response.json(apiresponse(200, "user updated successfully"));
   } catch (error) {
     console.log(error);

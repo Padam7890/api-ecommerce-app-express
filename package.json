@@ -17,7 +17,9 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.10.2",
+    "@vercel/blob": "^0.23.2",
     "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.2.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

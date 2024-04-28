@@ -10,9 +10,9 @@ const { apiresponse } = require("../../utils/apiresponse");
 const createCategory = async (request, response) => {
   try {
     const { category_name } = request.body;
-    const image = request.file;
+    // const image = request.file;
 
-    const imagePath = saveimagePath(image);
+    const imagePath = request.cloudinaryUrl;
 
     const createcategories = await category.create({
       data: {
