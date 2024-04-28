@@ -12,12 +12,13 @@ const createCategory = async (request, response) => {
     const { category_name } = request.body;
     // const image = request.file;
 
-    const imagePath = request.cloudinaryUrl;
+    const image = request.cloudinaryUrl;
+    console.log(image)
 
     const createcategories = await category.create({
       data: {
         category_name: category_name,
-        imageUrl: imagePath,
+        imageUrl: image,
       },
     });
 

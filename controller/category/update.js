@@ -13,11 +13,14 @@ async function updateCategory(request, response) {
     const { category_name, imageUrl } = request.body;
 
     let imagePath = imageUrl;
+
     const image = request.cloudinaryUrl;
 
     if (image) {
       imagePath = image;
     }
+
+    console.log(imagePath)
 
     const updatedCategory = await category.update({
       where: { id: parseInt(id) },

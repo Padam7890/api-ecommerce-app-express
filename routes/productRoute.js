@@ -13,6 +13,7 @@ const popularProduct = require("../controller/product/popularproduct");
 const checkAuth = require("../middleware/auth");
 const restrict = require("../middleware/restrict");
 const checkPermission = require("../middleware/restrict");
+const uploadToCloudinary = require("../middleware/cloudsave");
 
 router.get('/featured_products' , featuredproduct);
 router.get('/popular_products' , popularProduct)
@@ -20,8 +21,9 @@ router.get('/search', searchproduct );
 router.get('/filterbyprice', priceFilter)
 router.get("/", getAllProducts);
 router.get("/:id", getProductByID);
-router.post("/", upload.array("product_image", 10), createProduct);
-router.put("/:id", checkAuth, checkPermission(['update']),  upload.array("product_image", 10), updateProduct);
-router.delete("/:id", checkAuth, checkPermission(['delete']), deleteProduct);
+router.post("/", upload.array("product_image", 10),uploadToCloudinary,   createProduct);
+router.put("/:id", checkAuth,  upload.array("product_image", 10),uploadToCloudinary, updateProduct);
+router.delete("/:id", checkAuth, deleteProduct);
 
 module.exports = router;
+

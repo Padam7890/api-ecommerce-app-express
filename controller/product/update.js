@@ -135,15 +135,15 @@ async function updateProduct(request, response) {
       });
     }
 
-    const productImages = request.files;
+    const productImages = request.cloudinaryUrls;
+    console.log(productImages);
 
+//error below fixed this 
     if (productImages && productImages.length > 0) {
       for (const image of productImages) {
-        const imagePath = "/storage/" + image.filename;
-
         await prisma.productsImages.create({
           data: {
-            imageUrl: imagePath,
+            imageUrl: image,
             product_id: updatedProduct.id,
           },
         });
