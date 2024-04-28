@@ -37,15 +37,15 @@ async function login(request, response) {
     { id: userExists.id, roles: userExists.roles },
     process.env.JWT_SECRET_KEY,
     {
-      expiresIn: "1h",
+      expiresIn: "1m",
     }
   );
   //creating refresh token not that expiry
   const refreshToken = jwt.sign(
     { id: userExists.id, roles: userExists.roles },
-    process.env.JWT_REFRESH_SECRET_KEY,
+    process.env.REFRESH_TOKEN_SECRET,
     {
-      expiresIn: "1d",
+      expiresIn: "30d",
     }
   );
   response.cookie('jwt', refreshToken,{

@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
 
 const refreshTokenCheck = (request, response) => {
-  const refreshToken = request.cookies.jwt;
-  console.log(refreshToken);
+  const {refreshToken}= request.params;
+  console.log("refresh Token "+ refreshToken);
 
   if (!refreshToken) {
     return response.status(406).json({
@@ -20,7 +20,7 @@ const refreshTokenCheck = (request, response) => {
     // Generate a new access token
     const accessToken = jwt.sign(
       { id: decoded.id, roles: decoded.roles },
-      process.env.ACCESS_TOKEN_SECRET,
+      process.env.JWT_SECRET_KEY,
       {
         expiresIn: "1h",
       }

@@ -25,7 +25,7 @@ router.post("/register", register);
 router.post("/login", createRateLimiter(windowMs, 5, message), login);
 router.post("/forgetPassword", forgetPass);
 router.patch("/resetpassword/:token", resetPassword);
-router.post('/refresh_token',refreshTokenCheck);
+router.patch('/refresh_token/:refreshToken',refreshTokenCheck);
 router.patch("/updateadmin/:id", usertoAdmin );
 router.get('/profile',checkAuth, getuserdetails);
 router.post('/passwordChanged', checkAuth, changepassword);
