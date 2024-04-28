@@ -45,7 +45,7 @@ async function register(request, response) {
     //creating refresh token not that expiry
     const refreshToken = jwt.sign(
       { id: newUser.id, roles: newUser.roles },
-      process.env.JWT_REFRESH_SECRET_KEY,
+      process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: "1d",
       }
