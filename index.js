@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const cookieparser = require('cookie-parser');
+const { spawnSync } = require('child_process');
 
 
 const dotenv = require("dotenv");
@@ -45,6 +46,20 @@ app.post('/seed', async (req, res) => {
   }
 });
 
+function prismamigrate(req, res) {
+  const result = spawnSync('npx', ['prisma', 'migrate', 'deploy', '--preview-feature'], { stdio: 'inherit' });
+  res.status(200).send('Prisma migration completed');
+}
+
+function prismagenerate(req, res) {
+  const result = spawnSync('npx', ['prisma', 'generate'], { stdio: 'inherit' });
+  res.status(200).send('Prisma client generation completed');
+}
+
+module.exports = {
+  prismamigrate,
+  prismagenerate,
+};
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
