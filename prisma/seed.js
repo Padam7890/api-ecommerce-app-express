@@ -127,28 +127,50 @@ const usertoAdmin = async (request, response) => {
     }
     // Check if the user is already an admin
     const isAdmin = user.roles.some((role) => role.name === "admin");
-
+    const isUser = user.roles.some((role) => role.name === "user");
+   
     if (isAdmin) {
       return response.status(400).json({ error: "User is already an admin" });
     }
 
     const adminRole = await prisma.role.findFirst({ where: { name: "admin" } });
 
+    const userRole = await prisma.role.findFirst({ where: { name: "user" } });
+
     if (!adminRole) {
       return response
         .status(404)
         .json(apiresponse(200, "admin role not found"));
     }
-    await prisma.user.update({
-      where: { id: parseInt(id) },
-      data: {
-        roles: {
-          connect: {
-            id: adminRole.id,
+
+    if (isUser) {
+      //delete user's role 
+      await prisma.user.update({
+        where: { id: parseInt(id) },
+        data: {
+          roles: {
+            disconnect: {
+              id: userRole.id,
+            },
+            connect:{
+              id: adminRole.id,
+            }
           },
         },
-      },
-    });
+      });
+      
+    }
+
+    // await prisma.user.update({
+    //   where: { id: parseInt(id) },
+    //   data: {
+    //     roles: {
+    //       connect: {
+    //         id: adminRole.id,
+    //       },
+    //     },
+    //   },
+    // });
     return response.json(apiresponse(200, "user updated successfully"));
   } catch (error) {
     console.log(error);
