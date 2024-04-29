@@ -33,10 +33,6 @@ async function deletesubcategory(request, response) {
     });
   }
 
-  if (subcategoryToDelete.imageUrl) {
-    await deletefile(subcategoryToDelete.imageUrl);
-    console.log("subcategory image delted", subcategoryToDelete.imageUrl);
-  }
   const subcat = await subcategory.delete({
     where: { id: parseInt(id) },
   });

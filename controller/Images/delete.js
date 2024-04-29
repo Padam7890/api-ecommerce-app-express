@@ -17,8 +17,6 @@ const deleteimage = async (request, response) => {
     return response.json(apiresponse(400,"image not found"))
   }  
   
-  await deletefile(image.imageUrl);
-
   // Delete the image record from the database
   try {
     await productsImages.delete({

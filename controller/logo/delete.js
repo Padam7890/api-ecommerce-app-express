@@ -11,12 +11,6 @@ const deletelogo = async (request, response) => {
         id: parseInt(id),
       },
     });
-    try {
-      await deletefile(logodelete.imageUrl);
-      console.log("file deleted successfully");
-    } catch (error) {
-      console.log(error);
-    }
 
     return response.json(apiresponse(200, "logo", logodelete, "logo"));
   } catch (error) {

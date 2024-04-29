@@ -9,20 +9,13 @@ const createad = async (request, response) => {
     const { Title, subtitle, description, startTime, endTime } = request.body;
     console.log(request.body);
     
-    const url = request.file;
+    const image = request.cloudinaryUrl;
+    console.log(image);
+
 
    //date convert to isostring format
     const timestart = startTime ?  new Date(startTime).toISOString(): null;
     const timeend = endTime ? new Date(endTime).toISOString():null;
-
-    //check if image is provided
-    if (!url) {
-      return response
-        .status(400)
-        .json(apiresponse(400, "Image not provided", null));
-    }
-    //save image path to storage
-    const imagePath = saveimagePath(url);
 
     //insert data to database
     const adinsert = await prisma.$transaction([
@@ -33,7 +26,7 @@ const createad = async (request, response) => {
           description,
           startTime: timestart,
           endTime: timeend,
-          url: imagePath,
+          url: image,
         },
       }),
     ]);

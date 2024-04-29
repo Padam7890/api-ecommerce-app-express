@@ -7,11 +7,11 @@ async function updatesubcategory(request, response) {
     const { id } = request.params;
     const { subcategory_name, category_id, imageUrl } = request.body;
      
-    const image = request.file;
+    const image = request.cloudinaryUrl;
     let imagePath = imageUrl;
 
     if (image) {
-      imagePath = saveimagePath(image);
+      imagePath = image;
     }
     else{
       console.log("No new image uploaded.");

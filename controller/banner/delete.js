@@ -12,11 +12,7 @@ const deletebanner = async (request, response) => {
       },
     });
 
-    try {
-      await deletefile(delbanner.imageUrl);
-    } catch (error) {
-      console.log(error);
-    }
+
     return response.json(
       apiresponse(200, "banner Deleted", delbanner, "banner")
     );

@@ -6,9 +6,8 @@ const { apiresponse } = require("../../utils/apiresponse");
 const cilentcreate = async (request, response) => {
   try {
     const { clientName, clientType, clientRating, testimonial } = request.body;
-    const clientImage = request.file;
-
-    const saveclientImage = saveimagePath(clientImage);
+    const clientImage = request.cloudinaryUrl;
+    
     if (!clientImage) {
       return response.json("Missing client image");
     }
@@ -21,7 +20,7 @@ const cilentcreate = async (request, response) => {
         clientType,
         clientRating: convertclientRating,
         testimonial,
-        clientImage: saveclientImage,
+        clientImage: clientImage,
       },
     });
     response.json({

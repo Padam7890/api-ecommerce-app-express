@@ -8,14 +8,15 @@ const createbanner = async (request, response) => {
   try {
     
     let { title, subtitle, url } = request.body;
-    const image = request.file;
-    const imagePath = saveimagePath(image);
+    const image = request.cloudinaryUrl;
+    console.log(image);
+
     const banners = await banner.create({
       data: {
         title,
         subtitle,
         url,
-        imageUrl: imagePath,
+        imageUrl: image,
       },
     });
     response.json(apiresponse(201, "Banner created successfully",banners))

@@ -7,18 +7,13 @@ const updatelogo = async (request, response) => {
     const { name, imageUrl, url } = request.body;
     const { id } = request.params;
 
-    console.log("Request Body:", request.body);
-
     let imagePath = imageUrl;
-    const image = request.file;
+    const image = request.cloudinaryUrl;
 
     if (image) {
-      imagePath = saveimagePath(image);
-      console.log("Saved Image Path:", imagePath);
-    } else {
-      console.log("No new image uploaded.");
-    }
-    console.log(imagePath);
+      imagePath = image;
+    } 
+
     const logoUpdate = await logo.update({
       where: { id: parseInt(id) },
       data: {

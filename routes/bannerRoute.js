@@ -6,10 +6,11 @@ const bannerIndex = require("../controller/banner/index");
 const updatebanner = require("../controller/banner/update");
 const getonebanner = require("../controller/banner/onebanner");
 const deletebanner = require("../controller/banner/delete");
+const uploadToCloudinary = require("../middleware/cloudsave");
 
-router.post("/", upload.single('image'), banner);
+router.post("/", upload.single('image'), uploadToCloudinary, banner);
 router.get("/", bannerIndex);
-router.put("/:id", upload.single("image"), updatebanner);
+router.put("/:id", upload.single("image"),uploadToCloudinary, updatebanner);
 router.get("/:id",getonebanner)
 router.delete("/:id", deletebanner);
 

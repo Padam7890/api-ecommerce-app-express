@@ -14,7 +14,7 @@ router.get("/", getAllCategory);
 router.get("/:id", getCategoryByID);
 router.post("/", upload.single("image") , uploadToCloudinary, createCategory);
 router.put("/:id", upload.single("image"),uploadToCloudinary, updateCategory);
-router.delete("/:id", checkAuth,  restrict(["admin"]), deleteCategory);
+router.delete("/:id", checkAuth, deleteCategory);
 
 module.exports = router;
 

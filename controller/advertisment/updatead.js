@@ -16,12 +16,12 @@ const updatead = async (request, response) => {
     const timestart = startTime ? new Date(startTime).toISOString() : null;
     const timeend = endTime ? new Date(endTime).toISOString() : null;
 
-    const url = request.file;
+    const image = request.cloudinaryUrl;
     let imagePath = imageUrl;
 
     //check if new image is uploaded
-    if (url) {
-      imagePath = saveimagePath(url);
+    if (image) {
+      imagePath = image;
     }
 
     //update to database advertisment

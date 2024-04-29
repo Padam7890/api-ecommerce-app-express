@@ -11,20 +11,20 @@ async function storesubcategory(request, response) {
     const { category_id } = request.body;
 
     const categoryId = parseInt(category_id, 10);
-    const image = request.file;
-    const imagePath = saveimagePath(image);
+    const image = request.cloudinaryUrl;
+
     const subcat = await subcategory.create({
       data: {
         subcategory_name: subcategory_name,
         category_id: categoryId,
-        imageUrl: imagePath
+        imageUrl: image
       },
     });
 
       response.json({
       subcategory: subcat,
       message: "Subcategory added successfully",
-      image: imagePath,
+      image: image,
     });
   }
 

@@ -9,10 +9,10 @@ const updateCilents = async (request, response) => {
       request.body;
 
     let imagePath = clientImage;
-    const image = request.file;
+    const image = request.cloudinaryUrl;
 
     if (image) {
-      imagePath = saveimagePath(image);
+      imagePath = image;
     }
     const convertclientRating = parseInt(clientRating, 10);
 

@@ -8,10 +8,10 @@ const updateBanner = async (request, response) => {
     const { id } = request.params;
 
     let imagePath = imageUrl;
-    const image = request.file;
+    const image = request.cloudinaryUrl;
 
     if (image) {
-      imagePath = saveImagePath(image);
+      imagePath = image;
       console.log("Saved Image Path:", imagePath);
     }
 
