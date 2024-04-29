@@ -16,32 +16,38 @@ async function deleteCategory(request, response) {
         category_id: parseInt(id),
       },
     });
-
-    console.log(associatedProducts);
-
+  
+    console.log("Associated Products:", associatedProducts);
+  
     // Check if the category has associated subcategories
     const associatedSubCategories = await subcategory.findMany({
       where: {
         category_id: parseInt(id),
       },
     });
-
-    if (associatedProducts.length > 0 || associatedSubCategories.length > 0 ) {
+  
+    console.log("Associated Subcategories:", associatedSubCategories);
+  
+    if (associatedProducts.length > 0 || associatedSubCategories.length > 0) {
       return response.status(400).json({
         message: "Cannot delete category. It has associated products or subcategories",
         category: null,
       });
+    } else {
+      // Delete the category from the database
+      await category.delete({ where: { id: parseInt(id) } });
+      return response.status(200).json({
+        message: "Category deleted successfully",
+        category: parseInt(id),
+      });
     }
-    else{
-    // Delete the category from the database
-    await category.delete({ where: { id: parseInt(id) } });
-    }
-
-  
-    response.json(apiresponse(200, "Category deleted successfully", null, "category"));
   } catch (error) {
     console.error("Error deleting category:", error);
-    response.status(500).json(apiresponse(500, "Internal Server Error"));
+    return response.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
   }
+  
 }
 module.exports = deleteCategory;
