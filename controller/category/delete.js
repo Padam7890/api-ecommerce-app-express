@@ -17,6 +17,8 @@ async function deleteCategory(request, response) {
       },
     });
 
+    console.log(associatedProducts);
+
     // Check if the category has associated subcategories
     const associatedSubCategories = await subcategory.findMany({
       where: {
