@@ -14,6 +14,7 @@ async function deleteCategory(request, response) {
       const categoryToDelete = await category.findUnique({
         where: { id: parseInt(id) },
       });
+      
 
       if (!categoryToDelete) {
         return response.status(404).json({
