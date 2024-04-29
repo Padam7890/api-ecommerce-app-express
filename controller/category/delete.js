@@ -26,36 +26,18 @@ async function deleteCategory(request, response) {
       },
     });
 
-    if ( associatedProducts &&  associatedProducts.length > 0) {
+    if (associatedProducts.length > 0 || associatedSubCategories.length > 0 ) {
       return response.status(400).json({
-        message: "Cannot delete category. It has associated products",
+        message: "Cannot delete category. It has associated products or subcategories",
         category: null,
       });
     }
-
-    if (associatedSubCategories && associatedSubCategories.length > 0) {
-      return response.status(400).json({
-        message: "Cannot delete category. It has associated subcategories",
-        category: null,
-      });
-    }
-
-    // Retrieve the category data to get the image path
-    const categoryToDelete = await category.findUnique({
-      where: { id: parseInt(id) },
-    });
-
-    if (!categoryToDelete) {
-      return response.status(404).json({
-        message: "Category not found",
-        category: null,
-      });
-    }
-
-
+    else{
     // Delete the category from the database
     await category.delete({ where: { id: parseInt(id) } });
+    }
 
+  
     response.json(apiresponse(200, "Category deleted successfully", null, "category"));
   } catch (error) {
     console.error("Error deleting category:", error);
