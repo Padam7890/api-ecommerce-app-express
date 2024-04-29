@@ -24,14 +24,14 @@ async function deleteCategory(request, response) {
       },
     });
 
-    if (associatedProducts.length > 0) {
+    if ( associatedProducts &&  associatedProducts.length > 0) {
       return response.status(400).json({
         message: "Cannot delete category. It has associated products",
         category: null,
       });
     }
 
-    if (associatedSubCategories.length > 0) {
+    if (associatedSubCategories && associatedSubCategories.length > 0) {
       return response.status(400).json({
         message: "Cannot delete category. It has associated subcategories",
         category: null,
