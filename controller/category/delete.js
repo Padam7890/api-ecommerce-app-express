@@ -8,7 +8,6 @@ const { apiresponse } = require("../../utils/apiresponse");
 async function deleteCategory(request, response) {
   const { id } = request.params;
   console.log(id);
-
   try {
     await prisma.$transaction(async (prisma) => {
       // Check if the category exists
