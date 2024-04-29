@@ -7,11 +7,12 @@ const { apiresponse } = require("../../utils/apiresponse");
 
 async function deleteCategory(request, response) {
   const { id } = request.params;
+  console.log(id);
 
   try {
     await prisma.$transaction(async (prisma) => {
       // Check if the category exists
-      const categoryToDelete = await prisma.category.findUnique({
+      const categoryToDelete = await category.findUnique({
         where: { id: parseInt(id) },
       });
 
