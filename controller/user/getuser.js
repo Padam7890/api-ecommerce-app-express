@@ -16,6 +16,7 @@ const getuserdetails = async (request, response) => {
         roles: true,
       },
     });
+    console.log(getuser);
 
     const getuserwithoutpassword = exclude(getuser, ["password"]);
 

@@ -17,6 +17,7 @@ async function register(request, response) {
         error: "Email already exists",
       });
     }
+    
 
     const hashedPass = await hashPassword(password);
 
