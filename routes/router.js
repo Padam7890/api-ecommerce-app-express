@@ -20,7 +20,7 @@ function LoadRoutes(app) {
   app.use('/image', checkAuth, imageRoute)
   app.use('/banner', checkAuth,  bannerRoute)
   app.use('/logos', checkAuth, logoRoute)
-  app.use('/order', checkAuth, orderRoute)
+  app.use('/order',  orderRoute)
   app.use('/menu', checkAuth, menuRouter)
   app.use("/advertisement", checkAuth, adRoute)
   app.use('/cilents',checkAuth, cilentsRoute)
