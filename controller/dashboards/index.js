@@ -42,9 +42,12 @@ const getdashboarddetails = async (request, response) => {
 
     return response.status(200).json({
       message: "Success",
-      percentages: checkpercentage || 0,
-      totalOrder: gettotalorder,
-      totalProfits: totalProfits._sum.totalPrice || 0,
+      data:{
+        percentages: checkpercentage || 0,
+        totalOrder: gettotalorder,
+        totalProfits: totalProfits._sum.totalPrice || 0,
+      }
+     
     });
   } catch (error) {
     response
