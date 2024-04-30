@@ -7,7 +7,7 @@ const bannerindex = async (request, response) => {
     const bnner = await banner.findMany({});
     return response.json(apiresponse(200, "banner", bnner, "banner"));
   } catch (error) {
-    response.json(apiresponse(505, "banner error", error, "banner error"));
+    response.status(505).json(apiresponse(505, "banner error", error, "banner error"));
   }
 };
 module.exports = bannerindex;

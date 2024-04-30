@@ -13,7 +13,7 @@ const getonebanner = async(request,response)=> {
         return response.json(apiresponse(200, "banner", getbanner, "banner"));
         
     } catch (error) {
-        response.json(apiresponse(505, "banner error", error, "banner error"));
+        response.status(505).json(apiresponse(505, "banner error", error, "banner error"));
     }
 }
 

@@ -15,7 +15,7 @@ const deletelogo = async (request, response) => {
     return response.json(apiresponse(200, "logo", logodelete, "logo"));
   } catch (error) {
     console.error("Error:", error);
-    return response.json(
+    return response.status(500).json(
       apiresponse(505, "error deleting logo", error, "logo error")
     );
   }

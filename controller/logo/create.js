@@ -17,7 +17,7 @@ const logocreate = async (request, response) => {
     response.json(apiresponse(200, "Logo created successfully", logoadd));
   } catch (error) {
     console.log(error);
-    response.json(apiresponse(500, "Logo not created", error));
+    response.status(500).json(apiresponse(500, "Logo not created", error));
   }
 };
 

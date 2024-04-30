@@ -7,7 +7,7 @@ const logoList = async(request, response)=>{
         return response.json(apiresponse(200, "logo", getLogo, "logo"));
         
     } catch (error) {
-        response.json(apiresponse(500, "logo error", error, "logo error"));
+        response.status(500).json(apiresponse(500, "logo error", error, "logo error"));
     }
 }
 

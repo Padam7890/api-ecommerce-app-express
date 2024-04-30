@@ -11,7 +11,7 @@ const logoone = async (request, response) => {
     });
     return response.json(apiresponse(200, "logo", getlogo, "logo"));
   } catch (error) {
-    response.json(apiresponse(505, "logo error", error, "logo error"));
+    response.status(505).json(apiresponse(505, "logo error", error, "logo error"));
   }
 };
 

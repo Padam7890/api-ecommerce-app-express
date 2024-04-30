@@ -7,9 +7,9 @@ const cilentcreate = async (request, response) => {
   try {
     const { clientName, clientType, clientRating, testimonial } = request.body;
     const clientImage = request.cloudinaryUrl;
-    
+
     if (!clientImage) {
-      return response.json("Missing client image");
+      return response.status(404).json(apiresponse(404, "Not Found"));
     }
 
     const convertclientRating = parseInt(clientRating, 10);
@@ -23,13 +23,10 @@ const cilentcreate = async (request, response) => {
         clientImage: clientImage,
       },
     });
-    response.json({
-      message: "Client Created Successfully",
-      client,
-    });
+    response.status(201).json(apiresponse(201, "Cilent Created Sucessfully", convert));
   } catch (error) {
     console.log(error);
-    response.json(apiresponse(500, "Internal Server Error", error));
+    response.status(500).json(apiresponse(500, "Internal Server Error", error));
   }
 };
 

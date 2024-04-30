@@ -13,11 +13,11 @@ const deletebanner = async (request, response) => {
     });
 
 
-    return response.json(
+    return response.status(200).json(
       apiresponse(200, "banner Deleted", delbanner, "banner")
     );
   } catch (error) {
-    return response.json(
+    return response.staus(500).json(
       apiresponse(505, "error deleting banner", error, "banner error")
     );
   }

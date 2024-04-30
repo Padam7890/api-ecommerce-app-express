@@ -32,12 +32,12 @@ const createad = async (request, response) => {
     ]);
 
     //sucess responses
-    return response.json(apiresponse(200, "Sucessfully inserted data", adinsert));
+    return response.status(201).json(apiresponse(201, "Sucessfully inserted data", adinsert));
 
   } catch (error) {
     //error responses
     console.log(error);
-    response.json(apiresponse(500, "Internal Server Error", error));
+    response.status(500).json(apiresponse(500, "Internal Server Error", error));
   }
 };
 

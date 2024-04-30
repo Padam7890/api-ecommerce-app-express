@@ -25,7 +25,8 @@ const mailsubscribe = async (request, response) => {
       },
     });
 
-    const url = "127.0.0.1:3000";
+    // const url = process.env.UNSUBSCRIBE_WEBSITE;
+    const url= request.protocol + "://" + request.get("host");
     const unsubcribelink = `${request.protocol}://${url}/unsubscribe/${getsubscribe.id}`;
 
     const subscribeTemplate = fs.readFileSync(

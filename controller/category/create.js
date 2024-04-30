@@ -22,9 +22,9 @@ const createCategory = async (request, response) => {
       },
     });
 
-    response.json(
+    response.status(201).json(
       apiresponse(
-        200,
+        201,
         "Category added successfully",
         createcategories,
         "category"

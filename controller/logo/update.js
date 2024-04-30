@@ -12,7 +12,7 @@ const updatelogo = async (request, response) => {
 
     if (image) {
       imagePath = image;
-    } 
+    }
 
     const logoUpdate = await logo.update({
       where: { id: parseInt(id) },
@@ -27,7 +27,7 @@ const updatelogo = async (request, response) => {
     );
   } catch (error) {
     console.error("Error updating logo:", error);
-    response.json(apiresponse(500, "Internal Server Error" , error));
+    response.status(500).json(apiresponse(500, "Internal Server Error", error));
   }
 };
 

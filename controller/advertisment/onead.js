@@ -10,10 +10,10 @@ const editad = async(request,response)=>{
                 id: parseInt(id),
             },
         });
-        return response.json(apiresponse(200, "advertisment", editad, "advertisment"));
+        return response.status(200).json(apiresponse(200, "advertisment", editad, "advertisment"));
         
     } catch (error) {
-        response.json(apiresponse(505, "ad error", error, "ad error"));
+        response.status(500).json(apiresponse(505, "ad error", error, "ad error"));
         
     }
 }

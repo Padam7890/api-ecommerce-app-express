@@ -19,7 +19,7 @@ const createbanner = async (request, response) => {
         imageUrl: image,
       },
     });
-    response.json(apiresponse(201, "Banner created successfully",banners))
+    response.status(201).json(apiresponse(201, "Banner created successfully",banners))
   } catch (error) {
     console.log(error);
     response.status(500).json(apiresponse(500, "Banner Error",error))
