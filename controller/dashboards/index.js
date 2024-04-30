@@ -25,11 +25,14 @@ const getdashboarddetails = async (request, response) => {
       },
     });
 
-    const checkpercentage =
-      ((previousWeekOrder - twoWeekAgoOrder) / twoWeekAgoOrder) * 100;
-
-    
-
+    let checkpercentage;
+    if (twoWeekAgoOrder === 0) {
+      // If there were no orders two weeks ago, consider a 100% increase
+      checkpercentage = 100 ;
+    } else {
+      checkpercentage =
+        ((previousWeekOrder - twoWeekAgoOrder) / twoWeekAgoOrder) * 100;
+    }
 
     const totalProfits = await order.aggregate({
       _sum: {
@@ -39,7 +42,7 @@ const getdashboarddetails = async (request, response) => {
 
     return response.status(200).json({
       message: "Success",
-      percentages :checkpercentage || 0,
+      percentages: checkpercentage || 0,
       totalOrder: gettotalorder,
       totalProfits: totalProfits._sum.totalPrice || 0,
     });
