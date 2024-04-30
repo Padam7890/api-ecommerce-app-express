@@ -31,6 +31,7 @@ const getOrderfromdb = async (request, response) => {
       apiresponse(200, "Successfully Fetched Orders", orderswithourpass, "order")
     );
   } catch (error) {
+    throw new Error(error)
     response.json(apiresponse(500, "order error", error, "order error"));
   }
 };
