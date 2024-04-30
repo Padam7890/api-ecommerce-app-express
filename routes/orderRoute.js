@@ -8,7 +8,7 @@ const router = express.Router();
 
 
 
-router.post('/', checkAuth,  getorders);
+router.post('/',  getorders);
 router.get('/', checkAuth, getOrderfromdb),
 router.delete('/:id', checkAuth, checkPermission(["delete"]), deleteorder) 
 
