@@ -24,7 +24,7 @@ const forgetPass = async (request, response) => {
     }
 
     const resetToken = await resetpasswordtoken(getuser.id);
-    const url =  "localhost:5174"
+    const url = process.env.FRONTEND_URL;
 
     const resetUrl = `${request.protocol}://${url}/auth/resetpassword/${resetToken}`;
 

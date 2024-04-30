@@ -35,8 +35,8 @@ async function updateProduct(request, response) {
     console.log(request.body);
 
     // Convert string to boolean value
-    is_featured = is_featured === "true" ? true : false;
-    product_hot = product_hot === "true" ? true : false;
+    is_featured = (is_featured === "true");
+    product_hot = (product_hot === "true");
 
 
     // Convert string to int

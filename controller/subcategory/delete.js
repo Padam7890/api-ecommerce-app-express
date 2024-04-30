@@ -5,6 +5,7 @@ const subcategory = require("../../model/subcategory");
 const product = require("../../model/product");
 const { deletefile } = require("../../utils/filesystem");
 const category = require("../../model/category");
+const { apiresponse } = require("../../utils/apiresponse");
 
 async function deletesubcategory(request, response) {
   const { id } = request.params;
@@ -17,30 +18,25 @@ async function deletesubcategory(request, response) {
   });
 
   if (associatedProducts.length > 0) {
-    return response.status(400).json({
-      message: "Cannot delete subcategory. It has associated products",
-      subcategory: null,
-    });
+    return response.status(400).json(apiresponse(400,"Unable to delete it has associated products"));
   }
   const subcategoryToDelete = await subcategory.findUnique({
     where: { id: parseInt(id) },
   });
 
   if (!subcategoryToDelete) {
-    return response.status(404).json({
-      message: "SubCategory not found",
-      category: null,
-    });
+    return response
+      .status(404)
+      .json(apiresponse(404, "Subcategory not found", null));
   }
 
   const subcat = await subcategory.delete({
     where: { id: parseInt(id) },
   });
 
-  response.json({
-    subcat: subcat,
-    message: "Subcategory deleted successfully",
-  });
+  return response
+    .status(200)
+    .json(apiresponse(200, "Subcategory Deleted Sucessfully"));
 }
 
 module.exports = deletesubcategory;

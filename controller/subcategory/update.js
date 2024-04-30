@@ -1,39 +1,31 @@
 const saveimagePath = require("../../config/imagepath");
 const { prisma } = require("../../config/prisma");
 const fs = require("fs/promises");
-
+const { apiresponse } = require("../../utils/apiresponse");
 
 async function updatesubcategory(request, response) {
-    const { id } = request.params;
-    const { subcategory_name, category_id, imageUrl } = request.body;
-     
-    const image = request.cloudinaryUrl;
-    let imagePath = imageUrl;
+  const { id } = request.params;
+  const { subcategory_name, category_id, imageUrl } = request.body;
 
-    if (image) {
-      imagePath = image;
-    }
-    else{
-      console.log("No new image uploaded.");
-    }
+  const image = request.cloudinaryUrl;
+  let imagePath = imageUrl;
 
-    const categoryId = parseInt(category_id, 10);
-    
-    const subcat = await prisma.subcategory.update({
-      where: { id: parseInt(id) },
-      data: {
-        subcategory_name: subcategory_name,
-        category_id: categoryId,
-        imageUrl:imagePath,
-      },
-    });
-    
-    response.json({
-      subcategory: subcat,
-      message: "Subcategory updated successfully",
-      image: { url: imagePath }, // Return the updated image URL
-
-    });
+  if (image) {
+    imagePath = image;
   }
 
-  module.exports = updatesubcategory;
+  const categoryId = parseInt(category_id, 10);
+
+  const subcat = await prisma.subcategory.update({
+    where: { id: parseInt(id) },
+    data: {
+      subcategory_name: subcategory_name,
+      category_id: categoryId,
+      imageUrl: imagePath,
+    },
+  });
+
+  response.status(200).json(apiresponse(200, "Subcategory updated successfully", subcat, "Subcategory"));
+}
+
+module.exports = updatesubcategory;

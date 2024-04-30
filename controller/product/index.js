@@ -25,7 +25,7 @@ const getAllProducts = async (request, response) => {
     );
   } catch (error) {
     console.error("Error fetching products with images:", error);
-    return response.json(apiresponse(500, "Product List error",error,"Error"))
+    return response.status(500).json(apiresponse(500, "Product List error",error,"Error"))
   }
 };
 
