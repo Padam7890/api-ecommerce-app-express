@@ -2,6 +2,7 @@ const { response } = require("express");
 const { apiresponse } = require("../../utils/apiresponse");
 const order = require("../../model/order");
 const product = require("../../model/product");
+const user = require("../../model/user");
 
 const getdashboarddetails = async (request, response) => {
   try {
@@ -25,14 +26,21 @@ const getdashboarddetails = async (request, response) => {
       },
     });
 
+    const totalProducts = await product.count({});
+    const totalUsers = await user.count({})
+
+
     let checkpercentage;
     if (twoWeekAgoOrder === 0) {
-      // If there were no orders two weeks ago, consider a 100% increase
       checkpercentage = 100 ;
     } else {
       checkpercentage =
         ((previousWeekOrder - twoWeekAgoOrder) / twoWeekAgoOrder) * 100;
     }
+
+
+
+
 
     const totalProfits = await order.aggregate({
       _sum: {
@@ -46,6 +54,8 @@ const getdashboarddetails = async (request, response) => {
         percentages: checkpercentage || 0,
         totalOrder: gettotalorder,
         totalProfits: totalProfits._sum.totalPrice || 0,
+        totalProducts: totalProducts,
+        totalUsers: totalUsers
       }
      
     });
