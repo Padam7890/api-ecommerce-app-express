@@ -6,16 +6,13 @@ const orderItem = require("../../model/orderitem");
 
 async function deleteProduct(request, response) {
   const { id } = request.params;
-
   // Find the product to be deleted
   const product = await prisma.product.findUnique({
     where: { id: parseInt(id) },
   });
-
   if (product.length === 0) {
     return response.status(404).json({ error: "Product not found" });
   }
-
   try {
     await prisma.$transaction([
       // Delete product images
@@ -24,7 +21,6 @@ async function deleteProduct(request, response) {
           product_id: parseInt(id),
         },
       }),
-
       // Delete product tags (if applicable)
       prisma.productTag.deleteMany({
         where: {
@@ -36,7 +32,6 @@ async function deleteProduct(request, response) {
           product_id: parseInt(id),
         },
       }),
-
       // Now, delete the product itself
       prisma.product.delete({ where: { id: parseInt(id) } }),
     ]);
@@ -49,40 +44,49 @@ async function deleteProduct(request, response) {
   }
 }
 
-
-//delete slected products 
+//delete slected products
 
 async function deleteproducts(request, response) {
-  const { ids } = request.body;
+  // const selectedItems = request.query.selectedItems.split(',').map(Number);
+  const selectedItems = request.params.selectedItems.split(",").map(Number);
+  console.log(selectedItems);
   const products = await prisma.product.findMany({
     where: {
       id: {
-        in: ids,
+        in: selectedItems,
       },
     },
   });
+
   if (products.length === 0) {
     return response.status(404).json({ error: "Product not found" });
   }
+  console.log(products);
 
   try {
     await prisma.$transaction([
       // Delete product images
       productsImages.deleteMany({
         where: {
-          product_id: parseInt(id),
+          product_id: {
+            in: selectedItems,
+          },
         },
       }),
 
       // Delete product tags (if applicable)
       prisma.productTag.deleteMany({
         where: {
-          product_id: parseInt(id),
+          product_id: {
+            in: selectedItems,
+          },
         },
       }),
       orderItem.deleteMany({
         where: {
-          product_id: parseInt(id),
+          product_id: {
+            in: selectedItems,
+          },
         },
       }),
 
@@ -90,7 +94,7 @@ async function deleteproducts(request, response) {
       prisma.product.deleteMany({
         where: {
           id: {
-            in: ids,
+            in: selectedItems,
           },
         },
       }),
@@ -105,9 +109,7 @@ async function deleteproducts(request, response) {
   }
 }
 
-
-
 module.exports = {
   deleteProduct,
-  deleteproducts
+  deleteproducts,
 };

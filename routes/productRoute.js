@@ -24,8 +24,8 @@ router.get("/:id", getProductByID);
 router.post("/", upload.array("product_image", 10),uploadToCloudinary,   createProduct);
 router.put("/:id", checkAuth,  upload.array("product_image", 10),uploadToCloudinary, updateProduct);
 router.delete("/:id", checkAuth, checkPermission(["delete"]),deleteProduct );
-router.delete("/deleteall/:id", checkAuth, checkPermission(["delete"]), deleteproducts);
-
+router.delete('/deleteall/:selectedItems', checkAuth, checkPermission(['delete']), deleteproducts);
 
 module.exports = router;
+
 
