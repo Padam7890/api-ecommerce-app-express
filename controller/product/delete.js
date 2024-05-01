@@ -3,6 +3,7 @@ const fs = require("fs/promises");
 const { IMAGE_TYPE } = require("../../constants/enums");
 const productsImages = require("../../model/image");
 const orderItem = require("../../model/orderitem");
+
 async function deleteProduct(request, response) {
   const { id } = request.params;
 
@@ -11,7 +12,7 @@ async function deleteProduct(request, response) {
     where: { id: parseInt(id) },
   });
 
-  if (!product) {
+  if (product.length === 0) {
     return response.status(404).json({ error: "Product not found" });
   }
 
@@ -41,12 +42,72 @@ async function deleteProduct(request, response) {
     ]);
     response.json({
       message: "Product Deleted successfully",
-      product: product,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return response.status(500).json({ error: "Something went wrong" });
   }
 }
 
-module.exports = deleteProduct;
+
+//delete slected products 
+
+async function deleteproducts(request, response) {
+  const { ids } = request.body;
+  const products = await prisma.product.findMany({
+    where: {
+      id: {
+        in: ids,
+      },
+    },
+  });
+  if (products.length === 0) {
+    return response.status(404).json({ error: "Product not found" });
+  }
+
+  try {
+    await prisma.$transaction([
+      // Delete product images
+      productsImages.deleteMany({
+        where: {
+          product_id: parseInt(id),
+        },
+      }),
+
+      // Delete product tags (if applicable)
+      prisma.productTag.deleteMany({
+        where: {
+          product_id: parseInt(id),
+        },
+      }),
+      orderItem.deleteMany({
+        where: {
+          product_id: parseInt(id),
+        },
+      }),
+
+      // Now, delete the product itself
+      prisma.product.deleteMany({
+        where: {
+          id: {
+            in: ids,
+          },
+        },
+      }),
+    ]);
+    response.json({
+      message: "Product Deleted successfully",
+      product: products,
+    });
+  } catch (error) {
+    console.error(error);
+    return response.status(500).json({ error: "Something went wrong" });
+  }
+}
+
+
+
+module.exports = {
+  deleteProduct,
+  deleteproducts
+};
