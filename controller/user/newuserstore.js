@@ -23,7 +23,6 @@ const newuserStore = async (request, response) => {
     //hash password
 
     const encryptPassword = await hashPassword(password);
-
     try {
       const newuser = await user.create({
         data: {

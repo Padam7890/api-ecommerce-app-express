@@ -23,7 +23,7 @@ const cilentcreate = async (request, response) => {
         clientImage: clientImage,
       },
     });
-    response.status(201).json(apiresponse(201, "Cilent Created Sucessfully", convert));
+    response.status(201).json(apiresponse(201, "Cilent Created Sucessfully", client));
   } catch (error) {
     console.log(error);
     response.status(500).json(apiresponse(500, "Internal Server Error", error));
