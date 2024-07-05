@@ -36,6 +36,7 @@ const forgetPass = async (request, response) => {
       ),
       "utf8"
     );
+    
 
     const emailHTML = await ejs.render(emailTemplate, {
       getuser: getuser,

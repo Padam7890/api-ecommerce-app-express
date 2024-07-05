@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const cookieparser = require('cookie-parser');
+let cookieParser = require('cookie-parser'); 
 const { spawnSync } = require('child_process');
 
 
@@ -11,8 +11,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use(cookieparser());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true 
+}));
+
+app.use(cookieParser());
 
 
 

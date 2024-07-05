@@ -14,9 +14,9 @@ const cilentsRoute = require("./cilentRoute");
 
 function LoadRoutes(app) {
   app.use("/", mailRouter);
-  app.use("/products" , checkAuth, ProductRouter);
-  app.use("/categories", checkAuth, categoryRouter);
-  app.use("/subcategories", checkAuth,  subcategoryRoute)
+  app.use("/products" , ProductRouter);
+  app.use("/categories",  categoryRouter);
+  app.use("/subcategories",  subcategoryRoute)
   app.use('/image', checkAuth, imageRoute)
   app.use('/banner', checkAuth,  bannerRoute)
   app.use('/logos', checkAuth, logoRoute)

@@ -22,6 +22,7 @@ const checkPermission = (permissions) => {
           },
         },
       });
+      
 
 
       const hasPermissions = permissions.every((permission) =>

@@ -16,10 +16,11 @@ const getrole = require("../controller/user/getrole");
 const newuserStore = require("../controller/user/newuserstore");
 const getpermissions = require("../controller/user/getpermission");
 
+
 const windowMs = 1 * 60 * 1000; 
 const message = `Too many login attempts. Please try again in 1 Minute`;
 
-router.get('/users', checkAuth, getAlluser )
+router.get('/users', getAlluser )
 router.get('/roles', checkAuth, getrole)
 router.post("/register", register);
 router.post("/login", createRateLimiter(windowMs, 5, message), login);

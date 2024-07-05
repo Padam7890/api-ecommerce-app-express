@@ -24,7 +24,6 @@ async function login(request, response) {
   if (!userExists) {
     return response.status(404).json(apiresponse(404, "User not found"));
   }
-  
 
   const isPasswordValid = await bcrypt.compare(password, userExists.password);
 
@@ -48,14 +47,15 @@ async function login(request, response) {
       expiresIn: "30d",
     }
   );
-  response.cookie('jwt', refreshToken,{
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    maxAge: 1000 * 60 * 60 * 24 * 1,
-  } )
 
-  console.log("refreshToken" + refreshToken, "accesstoken"+jwtToken);
+  // console.log("refreshToken" + refreshToken, "accesstoken" + jwtToken);
+
+  response.cookie('myCookie', refreshToken, {
+    domain: 'localhost',
+    path: '/',
+    secure: false,
+    httpOnly: true
+  });
 
   response.json({
     message: "Success",
@@ -63,6 +63,7 @@ async function login(request, response) {
     accessToken: jwtToken,
     user: userExists,
   });
+  // response.cookie("refreshToken", "refreshToken");
 }
 
 module.exports = login;

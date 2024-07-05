@@ -63,9 +63,10 @@ model Favourites {
   category    Category @relation(fields: [category_id], references: [id])
 }
 
+
 model Product {
   id                  Int              @id @default(autoincrement())
-  product_title       String
+  product_title       String           
   product_description String           @db.Text
   regular_price       Decimal
   sale_price          Decimal
